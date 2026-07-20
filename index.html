@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X TJKT 2 | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+        body { font-family: 'Outfit', sans-serif; background: #eef2f7; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07); }
+        .gradient-header { background: linear-gradient(180deg, #1e3a8a 0%, #3b82f6 100%); }
+        .tab-active { background: #ffffff !important; color: #1e3a8a !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="pb-10">
+    <header class="gradient-header p-8 pb-12 text-white rounded-b-[3rem] shadow-lg">
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-sm font-semibold opacity-80">X TJKT 2</span>
+            <div class="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center font-bold">D</div>
+        </div>
+        <h1 class="text-3xl font-extrabold mb-1">Halo, Sobat TJKT!</h1>
+        <p class="text-blue-100 font-medium">Wali Kelas: Ibu Dian Vitaloka</p>
+    </header>
+    <div class="flex justify-center -mt-6 mb-8">
+        <div class="bg-blue-900/20 p-1 rounded-2xl flex gap-1">
+            <button onclick="render('piket')" id="btn-piket" class="tab-active px-6 py-2 rounded-xl text-sm font-bold transition-all">Piket</button>
+            <button onclick="render('struktur')" id="btn-struktur" class="px-6 py-2 rounded-xl text-sm font-bold text-white transition-all">Struktur</button>
+        </div>
+    </div>
+    <main id="app" class="px-5"></main>
+    <script>
+        const dataPiket = {
+            senin: ["Alexa S.M", "Janeta M.A", "Hanifah S.", "Alfi S.", "Riska V.F", "Ririn A.", "Yahya I.", "Erza F."],
+            selasa: ["Novi N.A", "Murtiasih", "Sofia A.S", "Iglima A.A", "Eka W.", "Rini A.", "M. Alif A."],
+            rabu: ["Afifah N.F", "Arsita Y.", "Chelsy R.", "Khaerunnisa A.", "Nayla H.N", "Rafan M.N.A", "Nesya S."],
+            kamis: ["Ghaitsa U.", "Dwi S.", "Dewi E.", "Hasna W.M", "Cantika J.", "Velin N.", "Ikhsan N.S."],
+            jumat: ["Aqilatuz Z.", "Asyifa T.R", "Della A.", "Fadhila A.S", "Nabila T.R", "Vivin A.", "Vinanda A.F."]
+        };
+        const struktur = [
+            { pos: "Ketua", name: "Iksan Nanang Saputra", icon: "fa-crown" },
+            { pos: "Wakil Ketua", name: "Muhamad Alif Asyifa", icon: "fa-user-check" },
+            { pos: "Sekretaris 1", name: "Alfi Syahrin", icon: "fa-pen" },
+            { pos: "Sekretaris 2", name: "Alexa Sherillica Mandala", icon: "fa-pen" },
+            { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet" },
+            { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet" }
+        ];
+        function render(view) {
+            document.querySelectorAll('button').forEach(b => b.classList.remove('tab-active', 'text-white'));
+            document.getElementById('btn-' + view).classList.add('tab-active');
+            const app = document.getElementById('app');
+            app.classList.remove('fade-in');
+            void app.offsetWidth;
+            app.classList.add('fade-in');
+            if(view === 'piket') {
+                app.innerHTML = Object.entries(dataPiket).map(([hari, nama]) => `
+                    <div class="glass-card p-5 rounded-3xl mb-4 border border-blue-100">
+                        <h3 class="text-blue-900 font-bold mb-3 capitalize flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-alt text-blue-500"></i> ${hari}
+                        </h3>
+                        <div class="space-y-2">
+                            ${nama.map(n => `<div class="bg-blue-50/50 p-2 px-4 rounded-xl text-sm font-medium text-blue-800">${n}</div>`).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                app.innerHTML = `
+                    <div class="glass-card p-6 rounded-3xl">
+                        ${struktur.map(s => `
+                            <div class="flex items-center gap-4 py-4 border-b last:border-0 border-blue-50">
+                                <div class="w-12 h-12 flex items-center justify-center bg-blue-100 text-blue-600 rounded-2xl text-xl">
+                                    <i class="fa-solid ${s.icon}"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] uppercase tracking-widest font-bold text-blue-400">${s.pos}</p>
+                                    <p class="font-bold text-blue-900">${s.name}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+        render('piket');
+    </script>
+</body>
+</html>

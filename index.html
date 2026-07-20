@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X TJKT 2 | SMKN 1 AMPELGADING</title>
+    <!-- Tailwind CSS Config untuk Dark Mode -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {} }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f8fafc;
-            color: #0f172a;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        /* Modern Glassmorphism */
+        /* Modern Glassmorphism (Support Light & Dark) */
         .glass-card { 
             background: rgba(255, 255, 255, 0.6); 
             backdrop-filter: blur(16px); 
@@ -24,151 +30,148 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03); 
         }
         
-        /* Smooth Gradient Header */
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.6); /* Slate-800 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .gradient-header { 
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); 
         }
+        
+        .dark .gradient-header {
+            background: linear-gradient(135deg, #312e81 0%, #4c1d95 100%);
+        }
 
-        /* Segmented Control / Tabs */
         .tab-active { 
             background: #ffffff !important; 
             color: #4f46e5 !important; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
         }
+
+        .dark .tab-active {
+            background: #334155 !important; /* Slate-700 */
+            color: #818cf8 !important; /* Indigo-400 */
+        }
         
-        /* Animations */
         .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes fadeIn { 
             from { opacity: 0; transform: translateY(10px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* Background Blobs for Aesthetic */
-        .blob {
-            position: absolute;
-            filter: blur(80px);
-            z-index: -1;
-            opacity: 0.4;
-        }
+        .blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.4; transition: 0.3s; }
+        .dark .blob { opacity: 0.2; }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
-<body class="pb-6 relative min-h-screen overflow-x-hidden">
+<body class="pb-10 relative min-h-screen overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-white transition-colors duration-300">
     
-    <!-- Decorative Background Elements -->
-    <div class="blob bg-indigo-300 w-72 h-72 rounded-full top-[-10%] left-[-10%]"></div>
-    <div class="blob bg-purple-300 w-72 h-72 rounded-full top-[20%] right-[-10%]"></div>
+    <!-- Background Blobs -->
+    <div class="blob bg-indigo-300 dark:bg-indigo-900 w-72 h-72 rounded-full top-[-10%] left-[-10%]"></div>
+    <div class="blob bg-purple-300 dark:bg-purple-900 w-72 h-72 rounded-full top-[20%] right-[-10%]"></div>
 
     <div class="max-w-5xl mx-auto">
         <!-- Header Section -->
-        <header class="gradient-header p-8 pb-14 text-white rounded-b-[2.5rem] shadow-xl relative overflow-hidden">
-            <!-- Subtle pattern overlay -->
+        <header class="gradient-header p-8 pb-14 text-white rounded-b-[2.5rem] shadow-xl relative overflow-hidden transition-colors duration-300">
             <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
             
             <div class="relative z-10 flex flex-wrap gap-4 justify-between items-start mb-6">
-                <!-- Identitas Sekolah & Kelas -->
                 <div class="flex flex-col gap-2">
                     <div class="bg-white/20 px-3 py-1 rounded-md backdrop-blur-sm border border-white/30 text-[10px] sm:text-xs font-bold tracking-widest uppercase inline-block w-max">
                         <i class="fa-solid fa-school mr-1"></i> SMKN 1 AMPELGADING
                     </div>
-                    <div class="text-indigo-100 font-semibold tracking-wide ml-1 text-sm">
-                        Kelas X TJKT 2
-                    </div>
+                    <div class="text-indigo-100 font-semibold tracking-wide ml-1 text-sm">Kelas X TJKT 2</div>
                 </div>
                 
-                <!-- Jam Real-Time WIB -->
-                <div class="bg-indigo-900/40 px-4 py-2 rounded-xl backdrop-blur-md border border-indigo-400/30 shadow-inner flex items-center gap-2">
-                    <i class="fa-regular fa-clock text-indigo-300"></i> 
-                    <span id="realtime-clock" class="font-bold text-sm tracking-widest font-mono">00:00:00</span>
-                    <span class="text-xs font-semibold text-indigo-300">WIB</span>
+                <div class="flex items-center gap-3">
+                    <!-- Tombol Dark Mode -->
+                    <button onclick="toggleDarkMode()" class="bg-white/20 p-2.5 rounded-full backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all">
+                        <i id="theme-icon" class="fa-solid fa-moon text-indigo-50"></i>
+                    </button>
+                    <!-- Jam -->
+                    <div class="bg-indigo-900/40 px-4 py-2 rounded-xl backdrop-blur-md border border-indigo-400/30 shadow-inner flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-indigo-300"></i> 
+                        <span id="realtime-clock" class="font-bold text-sm tracking-widest font-mono">00:00:00</span>
+                        <span class="text-xs font-semibold text-indigo-300">WIB</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="relative z-10 mt-6">
-                <h1 class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight">Halo, Sobat TJKT! 👋</h1>
-                <p class="text-indigo-100 font-medium text-base flex items-center gap-2 mb-4">
-                    <i class="fa-solid fa-chalkboard-user"></i> Wali Kelas: Ibu Dian Vitaloka
-                </p>
-
-                <!-- Quotes of the Day -->
-                <div class="bg-white/10 p-4 rounded-2xl border border-white/20 backdrop-blur-sm max-w-2xl border-l-4 border-l-indigo-300">
-                    <p class="text-indigo-50 text-sm sm:text-base font-medium italic flex gap-3">
-                        <i class="fa-solid fa-quote-left opacity-50 text-lg mt-0.5"></i>
-                        <span id="daily-quote">Memuat kutipan hari ini...</span>
+            <div class="relative z-10 mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight">Halo, Sobat TJKT! 👋</h1>
+                    <p class="text-indigo-100 font-medium flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-chalkboard-user"></i> Wali Kelas: Ibu Dian Vitaloka
                     </p>
+                    <div class="bg-white/10 p-3 rounded-2xl border border-white/20 backdrop-blur-sm border-l-4 border-l-indigo-300 inline-block">
+                        <p class="text-indigo-50 text-xs sm:text-sm font-medium italic flex gap-3">
+                            <i class="fa-solid fa-quote-left opacity-50 mt-0.5"></i>
+                            <span id="daily-quote">Memuat kutipan hari ini...</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- WIDGET LIVE TRACKER MATA PELAJARAN -->
+                <div class="bg-white/10 p-5 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg text-right md:text-left flex flex-col md:items-end justify-center">
+                    <div id="current-subject-container" class="w-full text-center md:text-right">
+                        <!-- Konten akan diisi oleh JavaScript -->
+                    </div>
                 </div>
             </div>
         </header>
 
         <!-- Navigation Tabs -->
         <div class="flex justify-center -mt-7 mb-10 relative z-20 px-4">
-            <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-xl shadow-sm border border-gray-100 no-scrollbar">
-                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Piket</button>
-                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Struktur</button>
-                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Jadwal</button>
-                <button onclick="render('galeri')" id="btn-galeri" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Galeri</button>
+            <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-xl shadow-sm border border-gray-100 dark:border-slate-700 no-scrollbar">
+                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Piket</button>
+                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Struktur</button>
+                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Jadwal</button>
+                <button onclick="render('galeri')" id="btn-galeri" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Galeri</button>
             </div>
         </div>
 
-        <!-- Main Content Area -->
-        <main id="app" class="px-5 min-h-[50vh]"></main>
+        <main id="app" class="px-5 min-h-[40vh]"></main>
 
-        <!-- Footer / Creator Credit -->
+        <!-- Footer -->
         <footer class="mt-12 text-center pb-8 fade-in flex flex-col items-center">
-            <p class="text-sm text-gray-400 font-medium mb-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
                 Dirancang & Dikembangkan dengan <i class="fa-solid fa-heart text-rose-400 mx-1"></i> oleh 
-                <span class="text-indigo-600 font-bold tracking-wide">MhmdAlfAsyf</span>
+                <span class="text-indigo-600 dark:text-indigo-400 font-bold tracking-wide">MhmdAlfAsyf</span>
             </p>
-            
-            <!-- Social Media Links -->
             <div class="flex gap-5 mt-1">
-                <a href="https://www.instagram.com/alph.keshemutan?igsh=dzJqZnBsNGJsd3Ru" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-600 transition-colors duration-300" title="Instagram">
-                    <i class="fa-brands fa-instagram text-xl"></i>
-                </a>
-                <a href="https://vt.tiktok.com/ZSXCKHKAy/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-slate-800 transition-colors duration-300" title="TikTok">
-                    <i class="fa-brands fa-tiktok text-xl"></i>
-                </a>
+                <a href="https://www.instagram.com/alph.keshemutan?igsh=dzJqZnBsNGJsd3Ru" target="_blank" class="text-gray-400 hover:text-pink-600 transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+                <a href="https://vt.tiktok.com/ZSXCKHKAy/" target="_blank" class="text-gray-400 hover:text-slate-800 dark:hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-xl"></i></a>
             </div>
         </footer>
     </div>
 
     <script>
-        // --- 1. Fitur Jam Real-Time WIB ---
-        function updateClock() {
-            const now = new Date();
-            const options = { 
-                timeZone: 'Asia/Jakarta', 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit',
-                hour12: false 
-            };
-            // Format waktu dan ganti titik menjadi titik dua (00:00:00)
-            const timeString = now.toLocaleTimeString('id-ID', options).replace(/\./g, ':');
-            document.getElementById('realtime-clock').innerText = timeString;
+        // --- 1. Fitur Dark Mode ---
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
         }
-        setInterval(updateClock, 1000); // Update setiap 1 detik
-        updateClock(); // Panggil sekali saat web pertama kali dimuat
+        // Cek preferensi tema sebelumnya
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+        }
 
-        // --- 2. Fitur Quotes of the Day ---
-        const quotes = [
-            "Tidak ada kata terlambat untuk mulai belajar hal baru, termasuk coding!",
-            "Bukan seberapa pintar kamu, tapi seberapa keras kamu mau berusaha.",
-            "Sukses adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan.",
-            "Terkadang sistem error bukan untuk membuat kita menyerah, tapi untuk menguji kesabaran kita.",
-            "Masa depan adalah milik mereka yang menyiapkan hari ini dengan sebaik-baiknya.",
-            "Jangan hanya menjadi pengguna teknologi, tapi jadilah pencipta teknologi."
-        ];
-        // Pilih angka acak berdasarkan jumlah kutipan yang ada
-        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        document.getElementById('daily-quote').innerText = randomQuote;
-
-        // --- Data Dashboard ---
+        // --- Data Utama ---
         const dataPiket = {
             senin: ["Alexa S.M", "Janeta M.A", "Hanifah S.", "Alfi S.", "Riska V.F", "Ririn A.", "Yahya I.", "Erza F."],
             selasa: ["Novi N.A", "Murtiasih", "Sofia A.S", "Iqlima A.A", "Eka W.", "Rini A.", "M. Alif A."],
@@ -178,79 +181,132 @@
         };
 
         const struktur = [
-            { pos: "Ketua", name: "Iksan Nanang Saputra", icon: "fa-crown", color: "text-amber-500", bg: "bg-amber-100" },
-            { pos: "Wakil Ketua", name: "Muhamad Alif Asyifa", icon: "fa-user-tie", color: "text-blue-500", bg: "bg-blue-100" },
-            { pos: "Sekretaris 1", name: "Alfi Syahrin", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100" },
-            { pos: "Sekretaris 2", name: "Alexa Sherillica Mandala", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100" },
-            { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100" },
-            { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100" }
+            { pos: "Ketua", name: "Iksan Nanang Saputra", icon: "fa-crown", color: "text-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30" },
+            { pos: "Wakil Ketua", name: "Muhamad Alif Asyifa", icon: "fa-user-tie", color: "text-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30" },
+            { pos: "Sekretaris 1", name: "Alfi Syahrin", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
+            { pos: "Sekretaris 2", name: "Alexa Sherillica Mandala", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
+            { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100 dark:bg-rose-900/30" },
+            { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100 dark:bg-rose-900/30" }
         ];
 
         const dataJadwal = {
             senin: [
-                { jam: "07.00–07.45", mapel: "Upacara / Kokurikuler", guru: "-" },
-                { jam: "07.45–09.15", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
-                { jam: "09.15–12.15", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
-                { jam: "12.50–14.10", mapel: "Sejarah", guru: "Ibu Kurniasari R. Sawitri, S.Pd." },
-                { jam: "14.10–15.30", mapel: "KKA", guru: "Bapak Asep Fanarus H, S.Kom." }
+                { jam: "07.00-07.45", mapel: "Upacara / Kokurikuler", guru: "-" },
+                { jam: "07.45-09.15", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "09.15-12.15", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
+                { jam: "12.50-14.10", mapel: "Sejarah", guru: "Ibu Kurniasari R. Sawitri, S.Pd." },
+                { jam: "14.10-15.30", mapel: "KKA", guru: "Bapak Asep Fanarus H, S.Kom." }
             ],
             selasa: [
-                { jam: "07.00–07.40", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.40–09.40", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
-                { jam: "09.40–11.55", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
-                { jam: "12.25–15.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." }
+                { jam: "07.00-07.40", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.40-09.40", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
+                { jam: "09.40-11.55", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
+                { jam: "12.25-15.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." }
             ],
             rabu: [
-                { jam: "07.00–07.45", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.45–09.15", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
-                { jam: "09.15–10.55", mapel: "Bahasa Jawa", guru: "Ibu Noor Mardiningsih, S.Pd." },
-                { jam: "10.55–12.15", mapel: "Seni Budaya", guru: "Ibu Eko Wahyuni, S.Pd., M.Pd." },
-                { jam: "12.50–14.10", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
-                { jam: "14.10–15.30", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." }
+                { jam: "07.00-07.45", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.45-09.15", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "09.15-10.55", mapel: "Bahasa Jawa", guru: "Ibu Noor Mardiningsih, S.Pd." },
+                { jam: "10.55-12.15", mapel: "Seni Budaya", guru: "Ibu Eko Wahyuni, S.Pd., M.Pd." },
+                { jam: "12.50-14.10", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "14.10-15.30", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." }
             ],
             kamis: [
-                { jam: "07.00–07.45", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.45–09.15", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
-                { jam: "09.15–13.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "13.30–15.30", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." }
+                { jam: "07.00-07.45", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.45-09.15", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
+                { jam: "09.15-13.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "13.30-15.30", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." }
             ],
             jumat: [
-                { jam: "07.00–07.30", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.30–09.15", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." },
-                { jam: "09.15–09.50", mapel: "BK", guru: "Bapak Teguh HR" },
-                { jam: "09.50–11.00", mapel: "Pancasila", guru: "Bapak Okidha Amin, S.Pd." },
-                { jam: "11.00–12.00", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
-                { jam: "12.00–12.45", mapel: "Kerohanian", guru: "-" },
+                { jam: "07.00-07.30", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.30-09.15", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." },
+                { jam: "09.15-09.50", mapel: "BK", guru: "Bapak Teguh HR" },
+                { jam: "09.50-11.00", mapel: "Pancasila", guru: "Bapak Okidha Amin, S.Pd." },
+                { jam: "11.00-12.00", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "12.00-12.45", mapel: "Kerohanian", guru: "-" },
                 { jam: "12.45-13.30", mapel: "Komunitas Belajar", guru: "-" }
             ]
         };
 
+        // --- 3. Fitur Jam Live & Tracker Jadwal ---
+        function updateClockAndSchedule() {
+            const now = new Date();
+            // Jam Live
+            const timeString = now.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':');
+            document.getElementById('realtime-clock').innerText = timeString;
+
+            // Tracker Jadwal
+            const days = ['minggu', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
+            const currentDay = days[now.getDay()];
+            const container = document.getElementById('current-subject-container');
+
+            if (currentDay === 'sabtu' || currentDay === 'minggu') {
+                container.innerHTML = `<div class="text-white text-xl font-bold"><i class="fa-solid fa-mug-hot text-amber-300 mr-2"></i>Libur Akhir Pekan!</div><div class="text-indigo-200 text-sm mt-1">Saatnya istirahat & main game.</div>`;
+                return;
+            }
+
+            const scheduleToday = dataJadwal[currentDay];
+            const currentMins = now.getHours() * 60 + now.getMinutes();
+            let activeSubj = null, isBefore = false, isAfter = false;
+
+            for (let i = 0; i < scheduleToday.length; i++) {
+                const [start, end] = scheduleToday[i].jam.split('-');
+                const [sH, sM] = start.split('.').map(Number);
+                const [eH, eM] = end.split('.').map(Number);
+                const sMins = sH * 60 + sM;
+                const eMins = eH * 60 + eM;
+
+                if (currentMins >= sMins && currentMins < eMins) {
+                    activeSubj = scheduleToday[i]; break;
+                }
+                if (i === 0 && currentMins < sMins) isBefore = true;
+                if (i === scheduleToday.length - 1 && currentMins >= eMins) isAfter = true;
+            }
+
+            if (activeSubj) {
+                container.innerHTML = `
+                    <div class="text-xs uppercase tracking-widest text-indigo-200 font-bold mb-1">Sedang Berlangsung</div>
+                    <div class="text-xl sm:text-2xl font-extrabold text-white leading-tight">${activeSubj.mapel}</div>
+                    <div class="text-sm text-indigo-100 mt-1"><i class="fa-solid fa-user-tie opacity-80 mr-1"></i> ${activeSubj.guru}</div>
+                `;
+            } else if (isBefore) {
+                container.innerHTML = `<div class="text-white text-lg font-bold"><i class="fa-solid fa-sun text-amber-300 mr-2"></i>Pelajaran Belum Mulai</div>`;
+            } else if (isAfter) {
+                container.innerHTML = `<div class="text-white text-lg font-bold"><i class="fa-solid fa-house-chimney text-emerald-300 mr-2"></i>Pelajaran Selesai!</div><div class="text-indigo-200 text-sm mt-1">Hati-hati di jalan pulang.</div>`;
+            } else {
+                container.innerHTML = `<div class="text-white text-lg font-bold"><i class="fa-solid fa-utensils text-amber-300 mr-2"></i>Waktu Istirahat / Kosong</div>`;
+            }
+        }
+        setInterval(updateClockAndSchedule, 1000);
+        updateClockAndSchedule();
+
+        // Quotes
+        const quotes = ["Coding itu gampang, yang susah nyari errornya.", "Sistem error bukan akhir dunia, tapi awal dari debugging.", "Jadilah pencipta teknologi, bukan cuma pemakai.", "SMK Bisa! TJKT Luar Biasa!"];
+        document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // --- Render UI ---
         function render(view) {
             document.querySelectorAll('button').forEach(b => {
-                b.classList.remove('tab-active', 'text-indigo-600');
-                b.classList.add('text-gray-500');
+                b.classList.remove('tab-active');
             });
             const activeBtn = document.getElementById('btn-' + view);
-            activeBtn.classList.remove('text-gray-500');
             activeBtn.classList.add('tab-active');
 
             const app = document.getElementById('app');
-            app.classList.remove('fade-in');
-            void app.offsetWidth;
-            app.classList.add('fade-in');
+            app.classList.remove('fade-in'); void app.offsetWidth; app.classList.add('fade-in');
 
             if(view === 'piket') {
                 app.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">` + 
                 Object.entries(dataPiket).map(([hari, nama]) => `
-                    <div class="glass-card p-6 rounded-3xl hover:shadow-lg transition-shadow duration-300">
-                        <div class="flex items-center gap-3 mb-5 border-b border-gray-100 pb-3">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
-                                <i class="fa-regular fa-calendar text-indigo-500 text-lg"></i>
+                    <div class="glass-card p-6 rounded-3xl transition-shadow">
+                        <div class="flex items-center gap-3 mb-5 border-b border-gray-100 dark:border-slate-700 pb-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center">
+                                <i class="fa-regular fa-calendar text-indigo-500 dark:text-indigo-400 text-lg"></i>
                             </div>
-                            <h3 class="text-slate-800 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
+                            <h3 class="text-slate-800 dark:text-white font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
                         </div>
                         <div class="flex flex-wrap gap-2">
-                            ${nama.map(n => `<span class="bg-indigo-50/70 border border-indigo-100 px-3 py-1.5 rounded-lg text-sm font-semibold text-indigo-700">${n}</span>`).join('')}
+                            ${nama.map(n => `<span class="bg-indigo-50/70 dark:bg-slate-700/50 border border-indigo-100 dark:border-slate-600 px-3 py-1.5 rounded-lg text-sm font-semibold text-indigo-700 dark:text-indigo-300">${n}</span>`).join('')}
                         </div>
                     </div>
                 `).join('') + `</div>`;
@@ -258,30 +314,26 @@
             else if(view === 'struktur') {
                 app.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">` + 
                 struktur.map(s => `
-                    <div class="glass-card p-6 rounded-3xl flex items-center gap-5 hover:-translate-y-1 transition-transform duration-300">
+                    <div class="glass-card p-6 rounded-3xl flex items-center gap-5">
                         <div class="w-14 h-14 flex items-center justify-center ${s.bg} ${s.color} rounded-2xl text-2xl shadow-sm">
                             <i class="fa-solid ${s.icon}"></i>
                         </div>
                         <div>
-                            <p class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-1">${s.pos}</p>
-                            <p class="font-bold text-slate-800 text-lg leading-tight">${s.name}</p>
+                            <p class="text-xs uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500 mb-1">${s.pos}</p>
+                            <p class="font-bold text-slate-800 dark:text-white text-lg leading-tight">${s.name}</p>
                         </div>
                     </div>
                 `).join('') + `</div>`;
             } 
             else if (view === 'galeri') {
-                // --- 3. Fitur Empty State Galeri ---
                 app.innerHTML = `
-                    <div class="glass-card p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[45vh] border-dashed border-2 border-indigo-200">
-                        <div class="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mb-6 shadow-inner relative">
-                            <i class="fa-solid fa-camera-retro text-4xl text-indigo-300"></i>
-                            <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow">
-                                <i class="fa-solid fa-plus text-indigo-500 text-sm"></i>
-                            </div>
+                    <div class="glass-card p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[45vh] border-dashed border-2 border-indigo-200 dark:border-slate-700">
+                        <div class="w-24 h-24 bg-indigo-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner relative">
+                            <i class="fa-solid fa-camera-retro text-4xl text-indigo-300 dark:text-slate-500"></i>
                         </div>
-                        <h3 class="text-2xl font-extrabold text-slate-800 mb-3 tracking-tight">Galeri Masih Kosong!</h3>
-                        <p class="text-gray-500 max-w-md text-sm leading-relaxed">
-                            Belum ada momen keseruan yang diunggah. Segera kumpulkan foto-foto terbaik bareng teman-teman X TJKT 2 dan pajang di sini!
+                        <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-3 tracking-tight">Galeri Masih Kosong!</h3>
+                        <p class="text-gray-500 dark:text-gray-400 max-w-md text-sm leading-relaxed">
+                            Belum ada momen yang diunggah. Kumpulkan foto terbaik bareng teman-teman X TJKT 2 dan pajang di sini!
                         </p>
                     </div>
                 `;
@@ -291,20 +343,20 @@
                 Object.entries(dataJadwal).map(([hari, mapelList]) => `
                     <div class="glass-card p-6 rounded-3xl">
                         <div class="flex items-center gap-3 mb-5">
-                            <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
-                                <i class="fa-solid fa-clock text-purple-500 text-lg"></i>
+                            <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
+                                <i class="fa-solid fa-clock text-purple-500 dark:text-purple-400 text-lg"></i>
                             </div>
-                            <h3 class="text-slate-800 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
+                            <h3 class="text-slate-800 dark:text-white font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
                         </div>
-                        <div class="space-y-3 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent pl-6">
+                        <div class="space-y-3 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 dark:before:via-slate-700 before:to-transparent pl-6">
                             ${mapelList.map((m) => `
-                                <div class="relative bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                                    <div class="absolute left-[-29px] top-5 w-3 h-3 bg-indigo-500 rounded-full border-2 border-white shadow"></div>
-                                    <span class="inline-block px-2.5 py-1 bg-gray-100 text-gray-500 text-xs font-bold rounded-md mb-2">
+                                <div class="relative bg-white/60 dark:bg-slate-800/80 p-4 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                                    <div class="absolute left-[-29px] top-5 w-3 h-3 bg-indigo-500 dark:bg-indigo-400 rounded-full border-2 border-white dark:border-slate-800 shadow"></div>
+                                    <span class="inline-block px-2.5 py-1 bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-300 text-xs font-bold rounded-md mb-2">
                                         <i class="fa-regular fa-hourglass-half mr-1"></i> ${m.jam}
                                     </span>
-                                    <p class="text-base font-extrabold text-slate-800 mb-1">${m.mapel}</p>
-                                    <p class="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                                    <p class="text-base font-extrabold text-slate-800 dark:text-white mb-1">${m.mapel}</p>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                                         <i class="fa-solid fa-user-tie text-xs opacity-70"></i> ${m.guru}
                                     </p>
                                 </div>
@@ -314,7 +366,6 @@
                 `).join('') + `</div>`;
             }
         }
-
         render('piket');
     </script>
 </body>

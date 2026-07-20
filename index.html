@@ -99,18 +99,28 @@
         <main id="app" class="px-5 min-h-[50vh]"></main>
 
         <!-- Footer / Creator Credit -->
-        <footer class="mt-12 text-center pb-4 fade-in">
-            <p class="text-sm text-gray-400 font-medium">
+        <footer class="mt-12 text-center pb-8 fade-in flex flex-col items-center">
+            <p class="text-sm text-gray-400 font-medium mb-3">
                 Dirancang & Dikembangkan dengan <i class="fa-solid fa-heart text-rose-400 mx-1"></i> oleh 
                 <span class="text-indigo-600 font-bold tracking-wide">MhmdAlfAsyf</span>
             </p>
+            
+            <!-- Social Media Links (Subtle) -->
+            <div class="flex gap-5 mt-1">
+                <a href="https://www.instagram.com/alph.keshemutan?igsh=dzJqZnBsNGJsd3Ru" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-600 transition-colors duration-300" title="Instagram">
+                    <i class="fa-brands fa-instagram text-xl"></i>
+                </a>
+                <a href="https://vt.tiktok.com/ZSXCKHKAy/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-slate-800 transition-colors duration-300" title="TikTok">
+                    <i class="fa-brands fa-tiktok text-xl"></i>
+                </a>
+            </div>
         </footer>
     </div>
 
     <script>
         const dataPiket = {
             senin: ["Alexa S.M", "Janeta M.A", "Hanifah S.", "Alfi S.", "Riska V.F", "Ririn A.", "Yahya I.", "Erza F."],
-            selasa: ["Novi N.A", "Murtiasih", "Sofia A.S", "Iglima A.A", "Eka W.", "Rini A.", "M. Alif A."],
+            selasa: ["Novi N.A", "Murtiasih", "Sofia A.S", "Iqlima A.A", "Eka W.", "Rini A.", "M. Alif A."],
             rabu: ["Afifah N.F", "Arsita Y.", "Chelsy R.", "Khaerunnisa A.", "Nayla H.N", "Rafan M.N.A", "Nesya S."],
             kamis: ["Ghaitsa U.", "Dwi S.", "Dewi E.", "Hasna W.M", "Cantika J.", "Velin N.", "Ikhsan N.S."],
             jumat: ["Aqilatuz Z.", "Asyifa T.R", "Della A.", "Fadhila A.S", "Nabila T.R", "Vivin A.", "Vinanda A.F."]
@@ -165,7 +175,6 @@
         };
 
         function render(view) {
-            // Update button styles
             document.querySelectorAll('button').forEach(b => {
                 b.classList.remove('tab-active', 'text-indigo-600');
                 b.classList.add('text-gray-500');
@@ -175,7 +184,6 @@
             activeBtn.classList.add('tab-active');
 
             const app = document.getElementById('app');
-            // Trigger reflow for animation
             app.classList.remove('fade-in');
             void app.offsetWidth;
             app.classList.add('fade-in');
@@ -239,7 +247,6 @@
             }
         }
 
-        // Initialize
         render('piket');
     </script>
 </body>

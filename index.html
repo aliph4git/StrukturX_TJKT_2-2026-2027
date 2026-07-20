@@ -7,32 +7,106 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-        body { font-family: 'Outfit', sans-serif; background: #eef2f7; }
-        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07); }
-        .gradient-header { background: linear-gradient(180deg, #1e3a8a 0%, #3b82f6 100%); }
-        .tab-active { background: #ffffff !important; color: #1e3a8a !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        
+        /* Modern Glassmorphism */
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.6); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03); 
+        }
+        
+        /* Smooth Gradient Header */
+        .gradient-header { 
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); 
+        }
+
+        /* Segmented Control / Tabs */
+        .tab-active { 
+            background: #ffffff !important; 
+            color: #4f46e5 !important; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* Background Blobs for Aesthetic */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="pb-10">
-    <header class="gradient-header p-8 pb-12 text-white rounded-b-[3rem] shadow-lg">
-        <div class="flex justify-between items-center mb-6">
-            <span class="text-sm font-semibold opacity-80">X TJKT 2</span>
-            <div class="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center font-bold">D</div>
+<body class="pb-6 relative min-h-screen overflow-x-hidden">
+    
+    <!-- Decorative Background Elements -->
+    <div class="blob bg-indigo-300 w-72 h-72 rounded-full top-[-10%] left-[-10%]"></div>
+    <div class="blob bg-purple-300 w-72 h-72 rounded-full top-[20%] right-[-10%]"></div>
+
+    <div class="max-w-5xl mx-auto">
+        <!-- Header Section -->
+        <header class="gradient-header p-8 pb-14 text-white rounded-b-[2.5rem] shadow-xl relative overflow-hidden">
+            <!-- Subtle pattern overlay -->
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+            
+            <div class="relative z-10 flex justify-between items-center mb-8">
+                <div class="bg-white/20 px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/30 text-sm font-semibold tracking-wide">
+                    Kelas X TJKT 2
+                </div>
+                <div class="w-12 h-12 rounded-full bg-white text-indigo-600 flex items-center justify-center font-extrabold text-xl shadow-lg border-2 border-indigo-200">
+                    D
+                </div>
+            </div>
+            <div class="relative z-10">
+                <h1 class="text-4xl font-extrabold mb-2 tracking-tight">Halo, Sobat TJKT! 👋</h1>
+                <p class="text-indigo-100 font-medium text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user"></i> Wali Kelas: Ibu Dian Vitaloka
+                </p>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="flex justify-center -mt-7 mb-10 relative z-20 px-4">
+            <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-md shadow-sm border border-gray-100">
+                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Piket</button>
+                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Struktur</button>
+                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Jadwal</button>
+            </div>
         </div>
-        <h1 class="text-3xl font-extrabold mb-1">Halo, Sobat TJKT!</h1>
-        <p class="text-blue-100 font-medium">Wali Kelas: Ibu Dian Vitaloka</p>
-    </header>
-    <div class="flex justify-center -mt-6 mb-8">
-        <div class="bg-blue-900/20 p-1 rounded-2xl flex gap-1 overflow-x-auto">
-            <button onclick="render('piket')" id="btn-piket" class="tab-active px-6 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap">Piket</button>
-            <button onclick="render('struktur')" id="btn-struktur" class="px-6 py-2 rounded-xl text-sm font-bold text-white transition-all whitespace-nowrap">Struktur</button>
-            <button onclick="render('jadwal')" id="btn-jadwal" class="px-6 py-2 rounded-xl text-sm font-bold text-white transition-all whitespace-nowrap">Jadwal</button>
-        </div>
+
+        <!-- Main Content Area -->
+        <main id="app" class="px-5 min-h-[50vh]"></main>
+
+        <!-- Footer / Creator Credit -->
+        <footer class="mt-12 text-center pb-4 fade-in">
+            <p class="text-sm text-gray-400 font-medium">
+                Dirancang & Dikembangkan dengan <i class="fa-solid fa-heart text-rose-400 mx-1"></i> oleh 
+                <span class="text-indigo-600 font-bold tracking-wide">MhmdAlfAsyf</span>
+            </p>
+        </footer>
     </div>
-    <main id="app" class="px-5"></main>
+
     <script>
         const dataPiket = {
             senin: ["Alexa S.M", "Janeta M.A", "Hanifah S.", "Alfi S.", "Riska V.F", "Ririn A.", "Yahya I.", "Erza F."],
@@ -41,137 +115,131 @@
             kamis: ["Ghaitsa U.", "Dwi S.", "Dewi E.", "Hasna W.M", "Cantika J.", "Velin N.", "Ikhsan N.S."],
             jumat: ["Aqilatuz Z.", "Asyifa T.R", "Della A.", "Fadhila A.S", "Nabila T.R", "Vivin A.", "Vinanda A.F."]
         };
+
         const struktur = [
-            { pos: "Ketua", name: "Iksan Nanang Saputra", icon: "fa-crown" },
-            { pos: "Wakil Ketua", name: "Muhamad Alif Asyifa", icon: "fa-user-check" },
-            { pos: "Sekretaris 1", name: "Alfi Syahrin", icon: "fa-pen" },
-            { pos: "Sekretaris 2", name: "Alexa Sherillica Mandala", icon: "fa-pen" },
-            { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet" },
-            { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet" }
+            { pos: "Ketua", name: "Iksan Nanang Saputra", icon: "fa-crown", color: "text-amber-500", bg: "bg-amber-100" },
+            { pos: "Wakil Ketua", name: "Muhamad Alif Asyifa", icon: "fa-user-tie", color: "text-blue-500", bg: "bg-blue-100" },
+            { pos: "Sekretaris 1", name: "Alfi Syahrin", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100" },
+            { pos: "Sekretaris 2", name: "Alexa Sherillica Mandala", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100" },
+            { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100" },
+            { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100" }
         ];
+
         const dataJadwal = {
             senin: [
                 { jam: "07.00–07.45", mapel: "Upacara / Kokurikuler", guru: "-" },
-                { jam: "07.45–08.30", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
-                { jam: "08.30–09.15", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
-                { jam: "09.15–10.00", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
-                { jam: "10.15–10.55", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
-                { jam: "10.55–11.35", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
-                { jam: "11.35–12.15", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
-                { jam: "12.50–13.30", mapel: "Sejarah", guru: "Ibu Kurniasari R. Sawitri, S.Pd." },
-                { jam: "13.30–14.10", mapel: "Sejarah", guru: "Ibu Kurniasari R. Sawitri, S.Pd." },
-                { jam: "14.10–14.50", mapel: "KKA", guru: "Bapak Asep Fanarus H, S.Kom." },
-                { jam: "14.50–15.30", mapel: "KKA", guru: "Bapak Asep Fanarus H, S.Kom." }
+                { jam: "07.45–09.15", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "09.15–12.15", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
+                { jam: "12.50–14.10", mapel: "Sejarah", guru: "Ibu Kurniasari R. Sawitri, S.Pd." },
+                { jam: "14.10–15.30", mapel: "KKA", guru: "Bapak Asep Fanarus H, S.Kom." }
             ],
             selasa: [
                 { jam: "07.00–07.40", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.40–08.20", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
-                { jam: "08.20–09.00", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
-                { jam: "09.00–09.40", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
-                { jam: "09.40–10.20", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
-                { jam: "10.35–11.15", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
-                { jam: "11.15–11.55", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd.." },
-                { jam: "12.25–13.00", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "13.00–13.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "13.30–14.00", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "14.00–14.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." }, 
-                { jam: "14.30–15.00", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." }, 
-                { jam: "15.00–15.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." }, 
+                { jam: "07.40–09.40", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
+                { jam: "09.40–11.55", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
+                { jam: "12.25–15.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." }
             ],
             rabu: [
                 { jam: "07.00–07.45", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.45–08.30", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
-                { jam: "08.30–09.15", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
-                { jam: "09.15–10.00", mapel: "Bahasa Jawa", guru: "Ibu Noor Mardiningsih, S.Pd." },
-                { jam: "10.15–10.55", mapel: "Bahasa Jawa", guru: "Ibu Noor Mardiningsih, S.Pd." },
-                { jam: "10.55–11.35", mapel: "Seni Budaya", guru: "Ibu Eko Wahyuni, S.Pd., M.Pd." },
-                { jam: "11.35–12.15", mapel: "Seni Budaya", guru: "Ibu Eko Wahyuni, S.Pd., M.Pd." },
-                { jam: "12.50–13.30", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
-                { jam: "13.30–14.10", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
-                { jam: "14.10–14.50", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
-                { jam: "14.50–15.30", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." }
+                { jam: "07.45–09.15", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "09.15–10.55", mapel: "Bahasa Jawa", guru: "Ibu Noor Mardiningsih, S.Pd." },
+                { jam: "10.55–12.15", mapel: "Seni Budaya", guru: "Ibu Eko Wahyuni, S.Pd., M.Pd." },
+                { jam: "12.50–14.10", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "14.10–15.30", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." }
             ],
             kamis: [
                 { jam: "07.00–07.45", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.45–08.30", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
-                { jam: "08.30–09.15", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
-                { jam: "09.15–10.00", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "10.15–10.55", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "10.55–11.35", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "11.35–12.15", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "12.50–13.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
-                { jam: "13.30–14.10", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
-                { jam: "14.10-14.50", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
-                { jam: "14.50–15.30", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." }
+                { jam: "07.45–09.15", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
+                { jam: "09.15–13.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "13.30–15.30", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." }
             ],
             jumat: [
                 { jam: "07.00–07.30", mapel: "Kokurikuler", guru: "-" },
-                { jam: "07.30–08.05", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." },
-                { jam: "08.05–08.40", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." },
-                { jam: "08.40–09.15", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." }, 
+                { jam: "07.30–09.15", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." },
                 { jam: "09.15–09.50", mapel: "BK", guru: "Bapak Teguh HR" },
-                { jam: "09.50–10.25", mapel: "Pancasila", guru: "Bapak Okidha Amin, S.Pd." },
-                { jam: "11.30–12.00", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
-                { jam: "10.25–11.00", mapel: "Pancasila", guru: "Bapak Okidha Amin, S.Pd." },
-                { jam: "11.00–11.30", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
-                { jam: "11.30–12.00", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
-                { jam: "12.00–12.45", mapel: "Kegiatan Kerohanian Murid", guru: "-" },
-                { jam: "12.45-13.30", mapel: "Komunitas Belajar Guru", guru: "-" }
+                { jam: "09.50–11.00", mapel: "Pancasila", guru: "Bapak Okidha Amin, S.Pd." },
+                { jam: "11.00–12.00", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "12.00–12.45", mapel: "Kerohanian", guru: "-" },
+                { jam: "12.45-13.30", mapel: "Komunitas Belajar", guru: "-" }
             ]
         };
+
         function render(view) {
-            document.querySelectorAll('button').forEach(b => b.classList.remove('tab-active', 'text-white'));
-            document.getElementById('btn-' + view).classList.add('tab-active');
+            // Update button styles
+            document.querySelectorAll('button').forEach(b => {
+                b.classList.remove('tab-active', 'text-indigo-600');
+                b.classList.add('text-gray-500');
+            });
+            const activeBtn = document.getElementById('btn-' + view);
+            activeBtn.classList.remove('text-gray-500');
+            activeBtn.classList.add('tab-active');
+
             const app = document.getElementById('app');
+            // Trigger reflow for animation
             app.classList.remove('fade-in');
             void app.offsetWidth;
             app.classList.add('fade-in');
+
             if(view === 'piket') {
-                app.innerHTML = Object.entries(dataPiket).map(([hari, nama]) => `
-                    <div class="glass-card p-5 rounded-3xl mb-4 border border-blue-100">
-                        <h3 class="text-blue-900 font-bold mb-3 capitalize flex items-center gap-2">
-                            <i class="fa-solid fa-calendar-alt text-blue-500"></i> ${hari}
-                        </h3>
-                        <div class="space-y-2">
-                            ${nama.map(n => `<div class="bg-blue-50/50 p-2 px-4 rounded-xl text-sm font-medium text-blue-800">${n}</div>`).join('')}
+                app.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">` + 
+                Object.entries(dataPiket).map(([hari, nama]) => `
+                    <div class="glass-card p-6 rounded-3xl hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center gap-3 mb-5 border-b border-gray-100 pb-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
+                                <i class="fa-regular fa-calendar text-indigo-500 text-lg"></i>
+                            </div>
+                            <h3 class="text-slate-800 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            ${nama.map(n => `<span class="bg-indigo-50/70 border border-indigo-100 px-3 py-1.5 rounded-lg text-sm font-semibold text-indigo-700">${n}</span>`).join('')}
                         </div>
                     </div>
-                `).join('');
-            } else if(view === 'struktur') {
-                app.innerHTML = `
-                    <div class="glass-card p-6 rounded-3xl">
-                        ${struktur.map(s => `
-                            <div class="flex items-center gap-4 py-4 border-b last:border-0 border-blue-50">
-                                <div class="w-12 h-12 flex items-center justify-center bg-blue-100 text-blue-600 rounded-2xl text-xl">
-                                    <i class="fa-solid ${s.icon}"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] uppercase tracking-widest font-bold text-blue-400">${s.pos}</p>
-                                    <p class="font-bold text-blue-900">${s.name}</p>
-                                </div>
-                            </div>
-                        `).join('')}
+                `).join('') + `</div>`;
+            } 
+            else if(view === 'struktur') {
+                app.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">` + 
+                struktur.map(s => `
+                    <div class="glass-card p-6 rounded-3xl flex items-center gap-5 hover:-translate-y-1 transition-transform duration-300">
+                        <div class="w-14 h-14 flex items-center justify-center ${s.bg} ${s.color} rounded-2xl text-2xl shadow-sm">
+                            <i class="fa-solid ${s.icon}"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-1">${s.pos}</p>
+                            <p class="font-bold text-slate-800 text-lg leading-tight">${s.name}</p>
+                        </div>
                     </div>
-                `;
-            } else {
-                app.innerHTML = Object.entries(dataJadwal).map(([hari, mapelList]) => `
-                    <div class="glass-card p-5 rounded-3xl mb-4 border border-blue-100">
-                        <h3 class="text-blue-900 font-bold mb-3 capitalize flex items-center gap-2">
-                            <i class="fa-solid fa-book text-blue-500"></i> ${hari}
-                        </h3>
-                        <div class="space-y-3">
-                            ${mapelList.map((m, i) => `
-                                <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100">
-                                    <p class="text-[10px] font-bold text-blue-400 uppercase">Jam ke-${i+1} (${m.jam})</p>
-                                    <p class="text-sm font-bold text-blue-900">${m.mapel}</p>
-                                    <p class="text-xs text-blue-600">${m.guru}</p>
+                `).join('') + `</div>`;
+            } 
+            else {
+                app.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">` + 
+                Object.entries(dataJadwal).map(([hari, mapelList]) => `
+                    <div class="glass-card p-6 rounded-3xl">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
+                                <i class="fa-solid fa-clock text-purple-500 text-lg"></i>
+                            </div>
+                            <h3 class="text-slate-800 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
+                        </div>
+                        <div class="space-y-3 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent pl-6">
+                            ${mapelList.map((m) => `
+                                <div class="relative bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                    <div class="absolute left-[-29px] top-5 w-3 h-3 bg-indigo-500 rounded-full border-2 border-white shadow"></div>
+                                    <span class="inline-block px-2.5 py-1 bg-gray-100 text-gray-500 text-xs font-bold rounded-md mb-2">
+                                        <i class="fa-regular fa-hourglass-half mr-1"></i> ${m.jam}
+                                    </span>
+                                    <p class="text-base font-extrabold text-slate-800 mb-1">${m.mapel}</p>
+                                    <p class="text-sm font-medium text-gray-500 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-user-tie text-xs opacity-70"></i> ${m.guru}
+                                    </p>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
-                `).join('');
+                `).join('') + `</div>`;
             }
         }
+
+        // Initialize
         render('piket');
     </script>
 </body>

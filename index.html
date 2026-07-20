@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X TJKT 2 | Dashboard</title>
+    <title>X TJKT 2 | SMKN 1 AMPELGADING</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -70,28 +70,48 @@
             <!-- Subtle pattern overlay -->
             <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
             
-            <div class="relative z-10 flex justify-between items-center mb-8">
-                <div class="bg-white/20 px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/30 text-sm font-semibold tracking-wide">
-                    Kelas X TJKT 2
+            <div class="relative z-10 flex flex-wrap gap-4 justify-between items-start mb-6">
+                <!-- Identitas Sekolah & Kelas -->
+                <div class="flex flex-col gap-2">
+                    <div class="bg-white/20 px-3 py-1 rounded-md backdrop-blur-sm border border-white/30 text-[10px] sm:text-xs font-bold tracking-widest uppercase inline-block w-max">
+                        <i class="fa-solid fa-school mr-1"></i> SMKN 1 AMPELGADING
+                    </div>
+                    <div class="text-indigo-100 font-semibold tracking-wide ml-1 text-sm">
+                        Kelas X TJKT 2
+                    </div>
                 </div>
-                <div class="w-12 h-12 rounded-full bg-white text-indigo-600 flex items-center justify-center font-extrabold text-xl shadow-lg border-2 border-indigo-200">
-                    D
+                
+                <!-- Jam Real-Time WIB -->
+                <div class="bg-indigo-900/40 px-4 py-2 rounded-xl backdrop-blur-md border border-indigo-400/30 shadow-inner flex items-center gap-2">
+                    <i class="fa-regular fa-clock text-indigo-300"></i> 
+                    <span id="realtime-clock" class="font-bold text-sm tracking-widest font-mono">00:00:00</span>
+                    <span class="text-xs font-semibold text-indigo-300">WIB</span>
                 </div>
             </div>
-            <div class="relative z-10">
-                <h1 class="text-4xl font-extrabold mb-2 tracking-tight">Halo, Sobat TJKT! 👋</h1>
-                <p class="text-indigo-100 font-medium text-lg flex items-center gap-2">
+
+            <div class="relative z-10 mt-6">
+                <h1 class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight">Halo, Sobat TJKT! 👋</h1>
+                <p class="text-indigo-100 font-medium text-base flex items-center gap-2 mb-4">
                     <i class="fa-solid fa-chalkboard-user"></i> Wali Kelas: Ibu Dian Vitaloka
                 </p>
+
+                <!-- Quotes of the Day -->
+                <div class="bg-white/10 p-4 rounded-2xl border border-white/20 backdrop-blur-sm max-w-2xl border-l-4 border-l-indigo-300">
+                    <p class="text-indigo-50 text-sm sm:text-base font-medium italic flex gap-3">
+                        <i class="fa-solid fa-quote-left opacity-50 text-lg mt-0.5"></i>
+                        <span id="daily-quote">Memuat kutipan hari ini...</span>
+                    </p>
+                </div>
             </div>
         </header>
 
         <!-- Navigation Tabs -->
         <div class="flex justify-center -mt-7 mb-10 relative z-20 px-4">
-            <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-md shadow-sm border border-gray-100">
-                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Piket</button>
-                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Struktur</button>
-                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Jadwal</button>
+            <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-xl shadow-sm border border-gray-100 no-scrollbar">
+                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Piket</button>
+                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Struktur</button>
+                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Jadwal</button>
+                <button onclick="render('galeri')" id="btn-galeri" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 transition-all duration-300 whitespace-nowrap hover:text-indigo-600">Galeri</button>
             </div>
         </div>
 
@@ -105,7 +125,7 @@
                 <span class="text-indigo-600 font-bold tracking-wide">MhmdAlfAsyf</span>
             </p>
             
-            <!-- Social Media Links (Subtle) -->
+            <!-- Social Media Links -->
             <div class="flex gap-5 mt-1">
                 <a href="https://www.instagram.com/alph.keshemutan?igsh=dzJqZnBsNGJsd3Ru" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-600 transition-colors duration-300" title="Instagram">
                     <i class="fa-brands fa-instagram text-xl"></i>
@@ -118,6 +138,37 @@
     </div>
 
     <script>
+        // --- 1. Fitur Jam Real-Time WIB ---
+        function updateClock() {
+            const now = new Date();
+            const options = { 
+                timeZone: 'Asia/Jakarta', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: false 
+            };
+            // Format waktu dan ganti titik menjadi titik dua (00:00:00)
+            const timeString = now.toLocaleTimeString('id-ID', options).replace(/\./g, ':');
+            document.getElementById('realtime-clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000); // Update setiap 1 detik
+        updateClock(); // Panggil sekali saat web pertama kali dimuat
+
+        // --- 2. Fitur Quotes of the Day ---
+        const quotes = [
+            "Tidak ada kata terlambat untuk mulai belajar hal baru, termasuk coding!",
+            "Bukan seberapa pintar kamu, tapi seberapa keras kamu mau berusaha.",
+            "Sukses adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan.",
+            "Terkadang sistem error bukan untuk membuat kita menyerah, tapi untuk menguji kesabaran kita.",
+            "Masa depan adalah milik mereka yang menyiapkan hari ini dengan sebaik-baiknya.",
+            "Jangan hanya menjadi pengguna teknologi, tapi jadilah pencipta teknologi."
+        ];
+        // Pilih angka acak berdasarkan jumlah kutipan yang ada
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('daily-quote').innerText = randomQuote;
+
+        // --- Data Dashboard ---
         const dataPiket = {
             senin: ["Alexa S.M", "Janeta M.A", "Hanifah S.", "Alfi S.", "Riska V.F", "Ririn A.", "Yahya I.", "Erza F."],
             selasa: ["Novi N.A", "Murtiasih", "Sofia A.S", "Iqlima A.A", "Eka W.", "Rini A.", "M. Alif A."],
@@ -218,6 +269,23 @@
                     </div>
                 `).join('') + `</div>`;
             } 
+            else if (view === 'galeri') {
+                // --- 3. Fitur Empty State Galeri ---
+                app.innerHTML = `
+                    <div class="glass-card p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[45vh] border-dashed border-2 border-indigo-200">
+                        <div class="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mb-6 shadow-inner relative">
+                            <i class="fa-solid fa-camera-retro text-4xl text-indigo-300"></i>
+                            <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow">
+                                <i class="fa-solid fa-plus text-indigo-500 text-sm"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-slate-800 mb-3 tracking-tight">Galeri Masih Kosong!</h3>
+                        <p class="text-gray-500 max-w-md text-sm leading-relaxed">
+                            Belum ada momen keseruan yang diunggah. Segera kumpulkan foto-foto terbaik bareng teman-teman X TJKT 2 dan pajang di sini!
+                        </p>
+                    </div>
+                `;
+            }
             else {
                 app.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">` + 
                 Object.entries(dataJadwal).map(([hari, mapelList]) => `

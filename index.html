@@ -26,9 +26,10 @@
         <p class="text-blue-100 font-medium">Wali Kelas: Ibu Dian Vitaloka</p>
     </header>
     <div class="flex justify-center -mt-6 mb-8">
-        <div class="bg-blue-900/20 p-1 rounded-2xl flex gap-1">
-            <button onclick="render('piket')" id="btn-piket" class="tab-active px-6 py-2 rounded-xl text-sm font-bold transition-all">Piket</button>
-            <button onclick="render('struktur')" id="btn-struktur" class="px-6 py-2 rounded-xl text-sm font-bold text-white transition-all">Struktur</button>
+        <div class="bg-blue-900/20 p-1 rounded-2xl flex gap-1 overflow-x-auto">
+            <button onclick="render('piket')" id="btn-piket" class="tab-active px-6 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap">Piket</button>
+            <button onclick="render('struktur')" id="btn-struktur" class="px-6 py-2 rounded-xl text-sm font-bold text-white transition-all whitespace-nowrap">Struktur</button>
+            <button onclick="render('jadwal')" id="btn-jadwal" class="px-6 py-2 rounded-xl text-sm font-bold text-white transition-all whitespace-nowrap">Jadwal</button>
         </div>
     </div>
     <main id="app" class="px-5"></main>
@@ -48,6 +49,72 @@
             { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet" },
             { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet" }
         ];
+        const dataJadwal = {
+            senin: [
+                { jam: "07.00–07.45", mapel: "Upacara / Kokurikuler", guru: "-" },
+                { jam: "07.45–08.30", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "08.30–09.15", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "09.15–10.00", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
+                { jam: "10.15–10.55", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
+                { jam: "10.55–11.35", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
+                { jam: "11.35–12.15", mapel: "Informatika (INF)", guru: "Bapak Rohman Pujadi, S.Kom., M.Kom." },
+                { jam: "12.50–13.30", mapel: "Sejarah", guru: "Ibu Kurniasari R. Sawitri, S.Pd." },
+                { jam: "13.30–14.10", mapel: "Sejarah", guru: "Ibu Kurniasari R. Sawitri, S.Pd." },
+                { jam: "14.10–14.50", mapel: "KKA", guru: "Bapak Asep Fanarus H, S.Kom." },
+                { jam: "14.50–15.30", mapel: "KKA", guru: "Bapak Asep Fanarus H, S.Kom." }
+            ],
+            selasa: [
+                { jam: "07.00–07.40", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.40–08.20", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
+                { jam: "08.20–09.00", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
+                { jam: "09.00–09.40", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
+                { jam: "09.40–10.20", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
+                { jam: "10.35–11.15", mapel: "PJOK", guru: "Bapak Agus Salim, S.Pd." },
+                { jam: "11.15–11.55", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "12.25–13.00", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "13.00–13.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "13.30–14.00", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "14.00–14.30", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." }
+            ],
+            rabu: [
+                { jam: "07.00–07.45", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.45–08.30", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "08.30–09.15", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "09.15–10.00", mapel: "Bahasa Jawa", guru: "Ibu Noor Mardiningsih, S.Pd." },
+                { jam: "10.15–10.55", mapel: "Bahasa Jawa", guru: "Ibu Noor Mardiningsih, S.Pd." },
+                { jam: "10.55–11.35", mapel: "Seni Budaya", guru: "Ibu Eko Wahyuni, S.Pd., M.Pd." },
+                { jam: "11.35–12.15", mapel: "Seni Budaya", guru: "Ibu Eko Wahyuni, S.Pd., M.Pd." },
+                { jam: "12.50–13.30", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "13.30–14.10", mapel: "Bahasa Inggris", guru: "Ibu Dian Vitaloka I, S.Pd." },
+                { jam: "14.10–14.50", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
+                { jam: "14.50–15.30", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." }
+            ],
+            kamis: [
+                { jam: "07.00–07.45", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.45–08.30", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
+                { jam: "08.30–09.15", mapel: "Matematika", guru: "Bapak Sugiharto, S.Pd." },
+                { jam: "09.15–10.00", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "10.15–10.55", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "10.55–11.35", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "11.35–12.15", mapel: "DK-TJKT", guru: "Bapak Nur Cahyo, S.Kom., M.Si." },
+                { jam: "12.50–13.30", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
+                { jam: "13.30–14.10", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
+                { jam: "14.10–14.50", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." },
+                { jam: "14.50–15.30", mapel: "IPAS", guru: "Bapak Ananto, S.Pd." }
+            ],
+            jumat: [
+                { jam: "07.00–07.30", mapel: "Kokurikuler", guru: "-" },
+                { jam: "07.30–08.05", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." },
+                { jam: "08.05–08.40", mapel: "PAIBP", guru: "Ibu Dewi Artikasari, S.Pd.I." },
+                { jam: "08.40–09.15", mapel: "BK", guru: "Bapak Teguh HR" },
+                { jam: "09.15–09.50", mapel: "Pancasila", guru: "Bapak Okidha Amin, S.Pd." },
+                { jam: "09.50–10.25", mapel: "Pancasila", guru: "Bapak Okidha Amin, S.Pd." },
+                { jam: "10.25–11.00", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "11.00–11.30", mapel: "Bahasa Indonesia", guru: "Bapak Azwar Anaf, S.Pd." },
+                { jam: "11.30–12.00", mapel: "Kegiatan Kerohanian Murid", guru: "-" },
+                { jam: "12.00–12.45", mapel: "Komunitas Belajar Guru", guru: "-" }
+            ]
+        };
         function render(view) {
             document.querySelectorAll('button').forEach(b => b.classList.remove('tab-active', 'text-white'));
             document.getElementById('btn-' + view).classList.add('tab-active');
@@ -66,7 +133,7 @@
                         </div>
                     </div>
                 `).join('');
-            } else {
+            } else if(view === 'struktur') {
                 app.innerHTML = `
                     <div class="glass-card p-6 rounded-3xl">
                         ${struktur.map(s => `
@@ -82,6 +149,23 @@
                         `).join('')}
                     </div>
                 `;
+            } else {
+                app.innerHTML = Object.entries(dataJadwal).map(([hari, mapelList]) => `
+                    <div class="glass-card p-5 rounded-3xl mb-4 border border-blue-100">
+                        <h3 class="text-blue-900 font-bold mb-3 capitalize flex items-center gap-2">
+                            <i class="fa-solid fa-book text-blue-500"></i> ${hari}
+                        </h3>
+                        <div class="space-y-3">
+                            ${mapelList.map((m, i) => `
+                                <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100">
+                                    <p class="text-[10px] font-bold text-blue-400 uppercase">Jam ke-${i+1} (${m.jam})</p>
+                                    <p class="text-sm font-bold text-blue-900">${m.mapel}</p>
+                                    <p class="text-xs text-blue-600">${m.guru}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
             }
         }
         render('piket');

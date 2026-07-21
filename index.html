@@ -31,7 +31,7 @@
         }
         
         .dark .glass-card {
-            background: rgba(30, 41, 59, 0.6); /* Slate-800 */
+            background: rgba(30, 41, 59, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -50,8 +50,8 @@
         }
 
         .dark .tab-active {
-            background: #334155 !important; /* Slate-700 */
-            color: #818cf8 !important; /* Indigo-400 */
+            background: #334155 !important;
+            color: #818cf8 !important;
         }
         
         .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -116,9 +116,9 @@
                     </div>
                 </div>
 
-                <!-- WIDGET LIVE TRACKER MATA PELAJARAN -->
-                <div class="bg-white/10 p-5 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg text-right md:text-left flex flex-col md:items-end justify-center">
-                    <div id="current-subject-container" class="w-full text-center md:text-right">
+                <!-- WIDGET LIVE TRACKER MATA PELAJARAN (Dengan Countdown) -->
+                <div class="bg-white/10 p-5 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg text-right md:text-left flex flex-col md:items-end justify-center min-h-[140px]">
+                    <div id="current-subject-container" class="w-full text-center md:text-right transition-all duration-300">
                         <!-- Konten akan diisi oleh JavaScript -->
                     </div>
                 </div>
@@ -151,7 +151,7 @@
     </div>
 
     <script>
-        // --- 1. Fitur Dark Mode ---
+        // --- Fitur Dark Mode ---
         function toggleDarkMode() {
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
@@ -165,7 +165,6 @@
                 localStorage.setItem('theme', 'dark');
             }
         }
-        // Cek preferensi tema sebelumnya
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
             document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
@@ -228,55 +227,105 @@
             ]
         };
 
-        // --- 3. Fitur Jam Live & Tracker Jadwal ---
+        // --- Algoritma Jam Live & Countdown Presisi ---
         function updateClockAndSchedule() {
             const now = new Date();
-            // Jam Live
+            
+            // Update Jam Digital Utama
             const timeString = now.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':');
             document.getElementById('realtime-clock').innerText = timeString;
 
-            // Tracker Jadwal
             const days = ['minggu', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
             const currentDay = days[now.getDay()];
             const container = document.getElementById('current-subject-container');
 
+            // Cek Libur Akhir Pekan
             if (currentDay === 'sabtu' || currentDay === 'minggu') {
                 container.innerHTML = `<div class="text-white text-xl font-bold"><i class="fa-solid fa-mug-hot text-amber-300 mr-2"></i>Libur Akhir Pekan!</div><div class="text-indigo-200 text-sm mt-1">Saatnya istirahat & main game.</div>`;
                 return;
             }
 
             const scheduleToday = dataJadwal[currentDay];
-            const currentMins = now.getHours() * 60 + now.getMinutes();
-            let activeSubj = null, isBefore = false, isAfter = false;
+            let foundState = false;
+            let htmlContent = '';
 
             for (let i = 0; i < scheduleToday.length; i++) {
-                const [start, end] = scheduleToday[i].jam.split('-');
-                const [sH, sM] = start.split('.').map(Number);
-                const [eH, eM] = end.split('.').map(Number);
-                const sMins = sH * 60 + sM;
-                const eMins = eH * 60 + eM;
+                const item = scheduleToday[i];
+                const [startStr, endStr] = item.jam.split('-');
+                const [sH, sM] = startStr.split('.').map(Number);
+                const [eH, eM] = endStr.split('.').map(Number);
 
-                if (currentMins >= sMins && currentMins < eMins) {
-                    activeSubj = scheduleToday[i]; break;
+                // Buat objek Date untuk waktu mulai dan selesai mapel ini
+                const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sH, sM, 0);
+                const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), eH, eM, 0);
+
+                // KONDISI 1: Sedang di dalam jam pelajaran ini
+                if (now >= startTime && now < endTime) {
+                    const diff = endTime - now;
+                    const h = Math.floor(diff / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    const countdownStr = h > 0 ? `${h}j ${m}m ${s}d` : `${m}m ${s}d`;
+
+                    htmlContent = `
+                        <div class="text-[10px] sm:text-xs uppercase tracking-widest text-indigo-200 font-bold mb-1">Sedang Berlangsung</div>
+                        <div class="text-xl sm:text-2xl font-extrabold text-white leading-tight">${item.mapel}</div>
+                        <div class="text-sm text-indigo-100 mt-1 mb-2"><i class="fa-solid fa-user-tie opacity-80 mr-1"></i> ${item.guru}</div>
+                        <div class="inline-block bg-white/20 px-3 py-1.5 rounded-lg border border-white/30 text-xs sm:text-sm font-bold text-white shadow-sm mt-1 backdrop-blur-md">
+                            <i class="fa-regular fa-hourglass-half animate-pulse text-amber-300 mr-1.5"></i> Berganti dalam <span class="font-mono text-amber-100">${countdownStr}</span>
+                        </div>
+                    `;
+                    foundState = true;
+                    break;
+                } 
+                // KONDISI 2: Waktu saat ini SEBELUM mapel ini dimulai (Bisa jadi sebelum masuk sekolah / jam istirahat)
+                else if (now < startTime) {
+                    const diff = startTime - now;
+                    const h = Math.floor(diff / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    const countdownStr = h > 0 ? `${h}j ${m}m ${s}d` : `${m}m ${s}d`;
+
+                    if (i === 0) {
+                        // Jika ini mapel pertama, berarti sekolah belum mulai
+                        htmlContent = `
+                            <div class="text-white text-lg font-bold"><i class="fa-solid fa-sun text-amber-300 mr-2"></i>Pelajaran Belum Mulai</div>
+                            <div class="inline-block bg-white/20 px-3 py-1.5 rounded-lg border border-white/30 text-xs sm:text-sm font-bold text-white shadow-sm mt-3 backdrop-blur-md">
+                                <i class="fa-regular fa-clock text-amber-300 mr-1.5"></i> Masuk kelas dalam <span class="font-mono text-amber-100">${countdownStr}</span>
+                            </div>
+                        `;
+                    } else {
+                        // Jika bukan mapel pertama, berarti sedang jam istirahat / jeda antar mapel
+                        htmlContent = `
+                            <div class="text-white text-lg font-bold"><i class="fa-solid fa-utensils text-amber-300 mr-2"></i>Waktu Istirahat / Kosong</div>
+                            <div class="text-indigo-100 text-sm mt-1 mb-2">Pelajaran selanjutnya: <strong>${item.mapel}</strong></div>
+                            <div class="inline-block bg-white/20 px-3 py-1.5 rounded-lg border border-white/30 text-xs sm:text-sm font-bold text-white shadow-sm mt-1 backdrop-blur-md">
+                                <i class="fa-solid fa-bell animate-bounce text-amber-300 mr-1.5"></i> Masuk dalam <span class="font-mono text-amber-100">${countdownStr}</span>
+                            </div>
+                        `;
+                    }
+                    foundState = true;
+                    break;
                 }
-                if (i === 0 && currentMins < sMins) isBefore = true;
-                if (i === scheduleToday.length - 1 && currentMins >= eMins) isAfter = true;
             }
 
-            if (activeSubj) {
-                container.innerHTML = `
-                    <div class="text-xs uppercase tracking-widest text-indigo-200 font-bold mb-1">Sedang Berlangsung</div>
-                    <div class="text-xl sm:text-2xl font-extrabold text-white leading-tight">${activeSubj.mapel}</div>
-                    <div class="text-sm text-indigo-100 mt-1"><i class="fa-solid fa-user-tie opacity-80 mr-1"></i> ${activeSubj.guru}</div>
+            // KONDISI 3: Waktu saat ini MELEWATI semua jadwal mapel (Sekolah sudah bubar)
+            if (!foundState) {
+                htmlContent = `
+                    <div class="text-white text-lg font-bold"><i class="fa-solid fa-house-chimney text-emerald-300 mr-2"></i>Pelajaran Selesai!</div>
+                    <div class="text-indigo-100 text-sm mt-2">Hati-hati di jalan pulang, istirahat yang cukup.</div>
                 `;
-            } else if (isBefore) {
-                container.innerHTML = `<div class="text-white text-lg font-bold"><i class="fa-solid fa-sun text-amber-300 mr-2"></i>Pelajaran Belum Mulai</div>`;
-            } else if (isAfter) {
-                container.innerHTML = `<div class="text-white text-lg font-bold"><i class="fa-solid fa-house-chimney text-emerald-300 mr-2"></i>Pelajaran Selesai!</div><div class="text-indigo-200 text-sm mt-1">Hati-hati di jalan pulang.</div>`;
-            } else {
-                container.innerHTML = `<div class="text-white text-lg font-bold"><i class="fa-solid fa-utensils text-amber-300 mr-2"></i>Waktu Istirahat / Kosong</div>`;
+            }
+
+            // Hanya perbarui DOM jika ada perubahan (mencegah flickering)
+            if (container.innerHTML !== htmlContent) {
+                container.innerHTML = htmlContent;
             }
         }
+        
+        // Jalankan fungsi setiap 1 detik
         setInterval(updateClockAndSchedule, 1000);
         updateClockAndSchedule();
 
@@ -284,13 +333,13 @@
         const quotes = ["Coding itu gampang, yang susah nyari errornya.", "Sistem error bukan akhir dunia, tapi awal dari debugging.", "Jadilah pencipta teknologi, bukan cuma pemakai.", "SMK Bisa! TJKT Luar Biasa!"];
         document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
-        // --- Render UI ---
+        // --- Render UI (Tabs) ---
         function render(view) {
             document.querySelectorAll('button').forEach(b => {
                 b.classList.remove('tab-active');
             });
             const activeBtn = document.getElementById('btn-' + view);
-            activeBtn.classList.add('tab-active');
+            if(activeBtn) activeBtn.classList.add('tab-active');
 
             const app = document.getElementById('app');
             app.classList.remove('fade-in'); void app.offsetWidth; app.classList.add('fade-in');

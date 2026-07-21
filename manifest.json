@@ -1,0 +1,16 @@
+{
+  "name": "X TJKT 2 Dashboard",
+  "short_name": "TJKT 2",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#021024",
+  "theme_color": "#021024",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

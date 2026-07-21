@@ -4,12 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X TJKT 2 | SMKN 1 AMPELGADING</title>
-    <!-- Tailwind CSS Config untuk Dark Mode -->
+    <!-- Tailwind CSS Config untuk Palet Custom -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: {} }
+            theme: { 
+                extend: {
+                    colors: {
+                        /* Palet Mode Terang (1000544142.jpg) */
+                        'lm-1': '#021024',
+                        'lm-2': '#052659',
+                        'lm-3': '#5483B3',
+                        'lm-4': '#7DA0CA',
+                        'lm-5': '#C1E8FF',
+                        /* Palet Mode Gelap (1000544143.jpg) */
+                        'dm-1': '#190019',
+                        'dm-2': '#2B124C',
+                        'dm-3': '#522B5B',
+                        'dm-4': '#854F6C',
+                        'dm-5': '#DFB6B2',
+                        'dm-6': '#FBE4D8',
+                    }
+                } 
+            }
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -18,40 +36,42 @@
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
         
-        /* Modern Glassmorphism (Support Light & Dark) */
+        /* Modern Glassmorphism dengan warna dari palet */
         .glass-card { 
-            background: rgba(255, 255, 255, 0.6); 
+            background: rgba(255, 255, 255, 0.4); 
             backdrop-filter: blur(16px); 
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.8); 
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+            box-shadow: 0 4px 30px rgba(2, 16, 36, 0.05); /* lm-1 */
         }
         
         .dark .glass-card {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(43, 18, 76, 0.4); /* dm-2 */
+            border: 1px solid rgba(133, 79, 108, 0.3); /* dm-4 */
+            box-shadow: 0 4px 30px rgba(25, 0, 25, 0.3); /* dm-1 */
         }
 
         .gradient-header { 
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); 
+            background: linear-gradient(135deg, #052659 0%, #5483B3 100%); 
         }
         
         .dark .gradient-header {
-            background: linear-gradient(135deg, #312e81 0%, #4c1d95 100%);
+            background: linear-gradient(135deg, #190019 0%, #522B5B 100%);
         }
 
         .tab-active { 
-            background: #ffffff !important; 
-            color: #4f46e5 !important; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            background: #052659 !important; /* lm-2 */
+            color: #C1E8FF !important; /* lm-5 */
+            box-shadow: 0 4px 15px rgba(2, 16, 36, 0.1); 
         }
 
         .dark .tab-active {
-            background: #334155 !important;
-            color: #818cf8 !important;
+            background: #854F6C !important; /* dm-4 */
+            color: #FBE4D8 !important; /* dm-6 */
+            box-shadow: 0 4px 15px rgba(25, 0, 25, 0.4);
         }
         
         .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -60,20 +80,20 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        .blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.4; transition: 0.3s; }
-        .dark .blob { opacity: 0.2; }
+        .blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.5; transition: 0.4s; }
+        .dark .blob { opacity: 0.3; }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        ::-webkit-scrollbar-thumb { background: #7DA0CA; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #522B5B; }
     </style>
 </head>
-<body class="pb-10 relative min-h-screen overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-white transition-colors duration-300">
+<body class="pb-10 relative min-h-screen overflow-x-hidden bg-lm-5 text-lm-1 dark:bg-dm-1 dark:text-dm-6 transition-colors duration-300">
     
     <!-- Background Blobs -->
-    <div class="blob bg-indigo-300 dark:bg-indigo-900 w-72 h-72 rounded-full top-[-10%] left-[-10%]"></div>
-    <div class="blob bg-purple-300 dark:bg-purple-900 w-72 h-72 rounded-full top-[20%] right-[-10%]"></div>
+    <div class="blob bg-lm-3 dark:bg-dm-3 w-72 h-72 rounded-full top-[-10%] left-[-10%]"></div>
+    <div class="blob bg-lm-4 dark:bg-dm-2 w-72 h-72 rounded-full top-[20%] right-[-10%]"></div>
 
     <div class="max-w-5xl mx-auto">
         <!-- Header Section -->
@@ -82,42 +102,42 @@
             
             <div class="relative z-10 flex flex-wrap gap-4 justify-between items-start mb-6">
                 <div class="flex flex-col gap-2">
-                    <div class="bg-white/20 px-3 py-1 rounded-md backdrop-blur-sm border border-white/30 text-[10px] sm:text-xs font-bold tracking-widest uppercase inline-block w-max">
+                    <div class="bg-white/20 px-3 py-1 rounded-md backdrop-blur-sm border border-white/30 text-[10px] sm:text-xs font-bold tracking-widest uppercase inline-block w-max text-white">
                         <i class="fa-solid fa-school mr-1"></i> SMKN 1 AMPELGADING
                     </div>
-                    <div class="text-indigo-100 font-semibold tracking-wide ml-1 text-sm">Kelas X TJKT 2</div>
+                    <div class="text-lm-5 dark:text-dm-5 font-semibold tracking-wide ml-1 text-sm">Kelas X TJKT 2</div>
                 </div>
                 
                 <div class="flex items-center gap-3">
                     <!-- Tombol Dark Mode -->
-                    <button onclick="toggleDarkMode()" class="bg-white/20 p-2.5 rounded-full backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all">
-                        <i id="theme-icon" class="fa-solid fa-moon text-indigo-50"></i>
+                    <button onclick="toggleDarkMode()" class="bg-white/20 p-2.5 rounded-full backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all text-white">
+                        <i id="theme-icon" class="fa-solid fa-moon"></i>
                     </button>
                     <!-- Jam -->
-                    <div class="bg-indigo-900/40 px-4 py-2 rounded-xl backdrop-blur-md border border-indigo-400/30 shadow-inner flex items-center gap-2">
-                        <i class="fa-regular fa-clock text-indigo-300"></i> 
-                        <span id="realtime-clock" class="font-bold text-sm tracking-widest font-mono">00:00:00</span>
-                        <span class="text-xs font-semibold text-indigo-300">WIB</span>
+                    <div class="bg-lm-1/30 dark:bg-dm-1/50 px-4 py-2 rounded-xl backdrop-blur-md border border-lm-5/30 dark:border-dm-4/30 shadow-inner flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-lm-5 dark:text-dm-5"></i> 
+                        <span id="realtime-clock" class="font-bold text-sm tracking-widest font-mono text-white dark:text-dm-6">00:00:00</span>
+                        <span class="text-xs font-semibold text-lm-5/80 dark:text-dm-5">WIB</span>
                     </div>
                 </div>
             </div>
 
             <div class="relative z-10 mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                 <div>
-                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight">Halo, Sobat TJKT! 👋</h1>
-                    <p class="text-indigo-100 font-medium flex items-center gap-2 mb-4">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight text-white dark:text-dm-6">Halo, Sobat TJKT! 👋</h1>
+                    <p class="text-lm-5 dark:text-dm-5 font-medium flex items-center gap-2 mb-4">
                         <i class="fa-solid fa-chalkboard-user"></i> Wali Kelas: Ibu Dian Vitaloka
                     </p>
-                    <div class="bg-white/10 p-3 rounded-2xl border border-white/20 backdrop-blur-sm border-l-4 border-l-indigo-300 inline-block">
-                        <p class="text-indigo-50 text-xs sm:text-sm font-medium italic flex gap-3">
-                            <i class="fa-solid fa-quote-left opacity-50 mt-0.5"></i>
+                    <div class="bg-lm-1/20 dark:bg-dm-1/40 p-3 rounded-2xl border border-lm-5/20 dark:border-dm-4/20 backdrop-blur-sm border-l-4 border-l-lm-5 dark:border-l-dm-4 inline-block">
+                        <p class="text-white dark:text-dm-6 text-xs sm:text-sm font-medium italic flex gap-3">
+                            <i class="fa-solid fa-quote-left opacity-50 mt-0.5 text-lm-5 dark:text-dm-5"></i>
                             <span id="daily-quote">Memuat kutipan hari ini...</span>
                         </p>
                     </div>
                 </div>
 
-                <!-- WIDGET LIVE TRACKER MATA PELAJARAN (Dengan Countdown) -->
-                <div class="bg-white/10 p-5 rounded-2xl border border-white/20 backdrop-blur-md shadow-lg text-right md:text-left flex flex-col md:items-end justify-center min-h-[140px]">
+                <!-- WIDGET LIVE TRACKER MATA PELAJARAN -->
+                <div class="bg-lm-1/20 dark:bg-dm-2/50 p-5 rounded-2xl border border-lm-5/20 dark:border-dm-4/30 backdrop-blur-md shadow-lg text-right md:text-left flex flex-col md:items-end justify-center min-h-[140px]">
                     <div id="current-subject-container" class="w-full text-center md:text-right transition-all duration-300">
                         <!-- Konten akan diisi oleh JavaScript -->
                     </div>
@@ -127,11 +147,11 @@
 
         <!-- Navigation Tabs -->
         <div class="flex justify-center -mt-7 mb-10 relative z-20 px-4">
-            <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-xl shadow-sm border border-gray-100 dark:border-slate-700 no-scrollbar">
-                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Piket</button>
-                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Struktur</button>
-                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Jadwal</button>
-                <button onclick="render('galeri')" id="btn-galeri" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-gray-500 dark:text-gray-400 transition-all duration-300 whitespace-nowrap hover:text-indigo-600 dark:hover:text-indigo-400">Galeri</button>
+            <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-xl shadow-sm border border-lm-4/30 dark:border-dm-4/30 no-scrollbar">
+                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Piket</button>
+                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Struktur</button>
+                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Jadwal</button>
+                <button onclick="render('galeri')" id="btn-galeri" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Galeri</button>
             </div>
         </div>
 
@@ -139,13 +159,13 @@
 
         <!-- Footer -->
         <footer class="mt-12 text-center pb-8 fade-in flex flex-col items-center">
-            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
-                Dirancang & Dikembangkan dengan <i class="fa-solid fa-heart text-rose-400 mx-1"></i> oleh 
-                <span class="text-indigo-600 dark:text-indigo-400 font-bold tracking-wide">MhmdAlfAsyf</span>
+            <p class="text-sm text-lm-1/60 dark:text-dm-5 font-medium mb-3">
+                Dirancang & Dikembangkan dengan <i class="fa-solid fa-heart text-lm-4 dark:text-dm-4 mx-1"></i> oleh 
+                <span class="text-lm-2 dark:text-dm-6 font-bold tracking-wide">MhmdAlfAsyf</span>
             </p>
             <div class="flex gap-5 mt-1">
-                <a href="https://www.instagram.com/alph.keshemutan?igsh=dzJqZnBsNGJsd3Ru" target="_blank" class="text-gray-400 hover:text-pink-600 transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
-                <a href="https://vt.tiktok.com/ZSXCKHKAy/" target="_blank" class="text-gray-400 hover:text-slate-800 dark:hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-xl"></i></a>
+                <a href="https://www.instagram.com/alph.keshemutan?igsh=dzJqZnBsNGJsd3Ru" target="_blank" class="text-lm-1/50 dark:text-dm-5 hover:text-lm-2 dark:hover:text-dm-6 transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+                <a href="https://vt.tiktok.com/ZSXCKHKAy/" target="_blank" class="text-lm-1/50 dark:text-dm-5 hover:text-lm-2 dark:hover:text-dm-6 transition-colors"><i class="fa-brands fa-tiktok text-xl"></i></a>
             </div>
         </footer>
     </div>
@@ -180,12 +200,12 @@
         };
 
         const struktur = [
-            { pos: "Ketua", name: "Iksan Nanang Saputra", icon: "fa-crown", color: "text-amber-500", bg: "bg-amber-100 dark:bg-amber-900/30" },
-            { pos: "Wakil Ketua", name: "Muhamad Alif Asyifa", icon: "fa-user-tie", color: "text-blue-500", bg: "bg-blue-100 dark:bg-blue-900/30" },
-            { pos: "Sekretaris 1", name: "Alfi Syahrin", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
-            { pos: "Sekretaris 2", name: "Alexa Sherillica Mandala", icon: "fa-pen-nib", color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
-            { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100 dark:bg-rose-900/30" },
-            { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet", color: "text-rose-500", bg: "bg-rose-100 dark:bg-rose-900/30" }
+            { pos: "Ketua", name: "Iksan Nanang Saputra", icon: "fa-crown" },
+            { pos: "Wakil Ketua", name: "Muhamad Alif Asyifa", icon: "fa-user-tie" },
+            { pos: "Sekretaris 1", name: "Alfi Syahrin", icon: "fa-pen-nib" },
+            { pos: "Sekretaris 2", name: "Alexa Sherillica Mandala", icon: "fa-pen-nib" },
+            { pos: "Bendahara 1", name: "Chellsy Raysellia", icon: "fa-wallet" },
+            { pos: "Bendahara 2", name: "Janeeta Malilah Azzahra", icon: "fa-wallet" }
         ];
 
         const dataJadwal = {
@@ -230,8 +250,6 @@
         // --- Algoritma Jam Live & Countdown Presisi ---
         function updateClockAndSchedule() {
             const now = new Date();
-            
-            // Update Jam Digital Utama
             const timeString = now.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':');
             document.getElementById('realtime-clock').innerText = timeString;
 
@@ -239,9 +257,8 @@
             const currentDay = days[now.getDay()];
             const container = document.getElementById('current-subject-container');
 
-            // Cek Libur Akhir Pekan
             if (currentDay === 'sabtu' || currentDay === 'minggu') {
-                container.innerHTML = `<div class="text-white text-xl font-bold"><i class="fa-solid fa-mug-hot text-amber-300 mr-2"></i>Libur Akhir Pekan!</div><div class="text-indigo-200 text-sm mt-1">Saatnya istirahat & main game.</div>`;
+                container.innerHTML = `<div class="text-white dark:text-dm-6 text-xl font-bold"><i class="fa-solid fa-mug-hot text-lm-5 dark:text-dm-5 mr-2"></i>Libur Akhir Pekan!</div><div class="text-lm-5 dark:text-dm-5 text-sm mt-1">Saatnya istirahat & main game.</div>`;
                 return;
             }
 
@@ -255,81 +272,65 @@
                 const [sH, sM] = startStr.split('.').map(Number);
                 const [eH, eM] = endStr.split('.').map(Number);
 
-                // Buat objek Date untuk waktu mulai dan selesai mapel ini
                 const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), sH, sM, 0);
                 const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), eH, eM, 0);
 
-                // KONDISI 1: Sedang di dalam jam pelajaran ini
                 if (now >= startTime && now < endTime) {
                     const diff = endTime - now;
                     const h = Math.floor(diff / (1000 * 60 * 60));
                     const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                     const s = Math.floor((diff % (1000 * 60)) / 1000);
-                    
                     const countdownStr = h > 0 ? `${h}j ${m}m ${s}d` : `${m}m ${s}d`;
 
                     htmlContent = `
-                        <div class="text-[10px] sm:text-xs uppercase tracking-widest text-indigo-200 font-bold mb-1">Sedang Berlangsung</div>
-                        <div class="text-xl sm:text-2xl font-extrabold text-white leading-tight">${item.mapel}</div>
-                        <div class="text-sm text-indigo-100 mt-1 mb-2"><i class="fa-solid fa-user-tie opacity-80 mr-1"></i> ${item.guru}</div>
-                        <div class="inline-block bg-white/20 px-3 py-1.5 rounded-lg border border-white/30 text-xs sm:text-sm font-bold text-white shadow-sm mt-1 backdrop-blur-md">
-                            <i class="fa-regular fa-hourglass-half animate-pulse text-amber-300 mr-1.5"></i> Berganti dalam <span class="font-mono text-amber-100">${countdownStr}</span>
+                        <div class="text-[10px] sm:text-xs uppercase tracking-widest text-lm-5/90 dark:text-dm-5 font-bold mb-1">Sedang Berlangsung</div>
+                        <div class="text-xl sm:text-2xl font-extrabold text-white dark:text-dm-6 leading-tight">${item.mapel}</div>
+                        <div class="text-sm text-lm-5 dark:text-dm-6 mt-1 mb-2"><i class="fa-solid fa-user-tie opacity-80 mr-1"></i> ${item.guru}</div>
+                        <div class="inline-block bg-lm-1/30 dark:bg-dm-3/50 px-3 py-1.5 rounded-lg border border-lm-5/30 dark:border-dm-4/50 text-xs sm:text-sm font-bold text-white dark:text-dm-6 shadow-sm mt-1 backdrop-blur-md">
+                            <i class="fa-regular fa-hourglass-half animate-pulse text-lm-5 dark:text-dm-5 mr-1.5"></i> Berganti dalam <span class="font-mono text-white dark:text-dm-6">${countdownStr}</span>
                         </div>
                     `;
-                    foundState = true;
-                    break;
-                } 
-                // KONDISI 2: Waktu saat ini SEBELUM mapel ini dimulai (Bisa jadi sebelum masuk sekolah / jam istirahat)
-                else if (now < startTime) {
+                    foundState = true; break;
+                } else if (now < startTime) {
                     const diff = startTime - now;
                     const h = Math.floor(diff / (1000 * 60 * 60));
                     const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                     const s = Math.floor((diff % (1000 * 60)) / 1000);
-                    
                     const countdownStr = h > 0 ? `${h}j ${m}m ${s}d` : `${m}m ${s}d`;
 
                     if (i === 0) {
-                        // Jika ini mapel pertama, berarti sekolah belum mulai
                         htmlContent = `
-                            <div class="text-white text-lg font-bold"><i class="fa-solid fa-sun text-amber-300 mr-2"></i>Pelajaran Belum Mulai</div>
-                            <div class="inline-block bg-white/20 px-3 py-1.5 rounded-lg border border-white/30 text-xs sm:text-sm font-bold text-white shadow-sm mt-3 backdrop-blur-md">
-                                <i class="fa-regular fa-clock text-amber-300 mr-1.5"></i> Masuk kelas dalam <span class="font-mono text-amber-100">${countdownStr}</span>
+                            <div class="text-white dark:text-dm-6 text-lg font-bold"><i class="fa-solid fa-sun text-lm-5 dark:text-dm-5 mr-2"></i>Pelajaran Belum Mulai</div>
+                            <div class="inline-block bg-lm-1/30 dark:bg-dm-3/50 px-3 py-1.5 rounded-lg border border-lm-5/30 dark:border-dm-4/50 text-xs sm:text-sm font-bold text-white dark:text-dm-6 shadow-sm mt-3 backdrop-blur-md">
+                                <i class="fa-regular fa-clock text-lm-5 dark:text-dm-5 mr-1.5"></i> Masuk kelas dalam <span class="font-mono text-white dark:text-dm-6">${countdownStr}</span>
                             </div>
                         `;
                     } else {
-                        // Jika bukan mapel pertama, berarti sedang jam istirahat / jeda antar mapel
                         htmlContent = `
-                            <div class="text-white text-lg font-bold"><i class="fa-solid fa-utensils text-amber-300 mr-2"></i>Waktu Istirahat / Kosong</div>
-                            <div class="text-indigo-100 text-sm mt-1 mb-2">Pelajaran selanjutnya: <strong>${item.mapel}</strong></div>
-                            <div class="inline-block bg-white/20 px-3 py-1.5 rounded-lg border border-white/30 text-xs sm:text-sm font-bold text-white shadow-sm mt-1 backdrop-blur-md">
-                                <i class="fa-solid fa-bell animate-bounce text-amber-300 mr-1.5"></i> Masuk dalam <span class="font-mono text-amber-100">${countdownStr}</span>
+                            <div class="text-white dark:text-dm-6 text-lg font-bold"><i class="fa-solid fa-utensils text-lm-5 dark:text-dm-5 mr-2"></i>Waktu Istirahat / Kosong</div>
+                            <div class="text-lm-5 dark:text-dm-6 text-sm mt-1 mb-2">Pelajaran selanjutnya: <strong>${item.mapel}</strong></div>
+                            <div class="inline-block bg-lm-1/30 dark:bg-dm-3/50 px-3 py-1.5 rounded-lg border border-lm-5/30 dark:border-dm-4/50 text-xs sm:text-sm font-bold text-white dark:text-dm-6 shadow-sm mt-1 backdrop-blur-md">
+                                <i class="fa-solid fa-bell animate-bounce text-lm-5 dark:text-dm-5 mr-1.5"></i> Masuk dalam <span class="font-mono text-white dark:text-dm-6">${countdownStr}</span>
                             </div>
                         `;
                     }
-                    foundState = true;
-                    break;
+                    foundState = true; break;
                 }
             }
 
-            // KONDISI 3: Waktu saat ini MELEWATI semua jadwal mapel (Sekolah sudah bubar)
             if (!foundState) {
                 htmlContent = `
-                    <div class="text-white text-lg font-bold"><i class="fa-solid fa-house-chimney text-emerald-300 mr-2"></i>Pelajaran Selesai!</div>
-                    <div class="text-indigo-100 text-sm mt-2">Hati-hati di jalan pulang, istirahat yang cukup.</div>
+                    <div class="text-white dark:text-dm-6 text-lg font-bold"><i class="fa-solid fa-house-chimney text-lm-5 dark:text-dm-5 mr-2"></i>Pelajaran Selesai!</div>
+                    <div class="text-lm-5 dark:text-dm-6 text-sm mt-2">Hati-hati di jalan pulang, istirahat yang cukup.</div>
                 `;
             }
 
-            // Hanya perbarui DOM jika ada perubahan (mencegah flickering)
-            if (container.innerHTML !== htmlContent) {
-                container.innerHTML = htmlContent;
-            }
+            if (container.innerHTML !== htmlContent) { container.innerHTML = htmlContent; }
         }
         
-        // Jalankan fungsi setiap 1 detik
         setInterval(updateClockAndSchedule, 1000);
         updateClockAndSchedule();
 
-        // Quotes
         const quotes = ["Coding itu gampang, yang susah nyari errornya.", "Sistem error bukan akhir dunia, tapi awal dari debugging.", "Jadilah pencipta teknologi, bukan cuma pemakai.", "SMK Bisa! TJKT Luar Biasa!"];
         document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
@@ -348,14 +349,14 @@
                 app.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">` + 
                 Object.entries(dataPiket).map(([hari, nama]) => `
                     <div class="glass-card p-6 rounded-3xl transition-shadow">
-                        <div class="flex items-center gap-3 mb-5 border-b border-gray-100 dark:border-slate-700 pb-3">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center">
-                                <i class="fa-regular fa-calendar text-indigo-500 dark:text-indigo-400 text-lg"></i>
+                        <div class="flex items-center gap-3 mb-5 border-b border-lm-4/30 dark:border-dm-4/30 pb-3">
+                            <div class="w-10 h-10 rounded-xl bg-lm-5 dark:bg-dm-2 flex items-center justify-center">
+                                <i class="fa-regular fa-calendar text-lm-2 dark:text-dm-5 text-lg"></i>
                             </div>
-                            <h3 class="text-slate-800 dark:text-white font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
+                            <h3 class="text-lm-1 dark:text-dm-6 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
                         </div>
                         <div class="flex flex-wrap gap-2">
-                            ${nama.map(n => `<span class="bg-indigo-50/70 dark:bg-slate-700/50 border border-indigo-100 dark:border-slate-600 px-3 py-1.5 rounded-lg text-sm font-semibold text-indigo-700 dark:text-indigo-300">${n}</span>`).join('')}
+                            ${nama.map(n => `<span class="bg-lm-5/50 dark:bg-dm-3/40 border border-lm-4/50 dark:border-dm-4/40 px-3 py-1.5 rounded-lg text-sm font-semibold text-lm-2 dark:text-dm-6">${n}</span>`).join('')}
                         </div>
                     </div>
                 `).join('') + `</div>`;
@@ -364,24 +365,24 @@
                 app.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">` + 
                 struktur.map(s => `
                     <div class="glass-card p-6 rounded-3xl flex items-center gap-5">
-                        <div class="w-14 h-14 flex items-center justify-center ${s.bg} ${s.color} rounded-2xl text-2xl shadow-sm">
+                        <div class="w-14 h-14 flex items-center justify-center bg-lm-5 dark:bg-dm-3/50 text-lm-2 dark:text-dm-5 rounded-2xl text-2xl shadow-sm border border-lm-4/30 dark:border-dm-4/30">
                             <i class="fa-solid ${s.icon}"></i>
                         </div>
                         <div>
-                            <p class="text-xs uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500 mb-1">${s.pos}</p>
-                            <p class="font-bold text-slate-800 dark:text-white text-lg leading-tight">${s.name}</p>
+                            <p class="text-xs uppercase tracking-widest font-bold text-lm-2/70 dark:text-dm-5 mb-1">${s.pos}</p>
+                            <p class="font-bold text-lm-1 dark:text-dm-6 text-lg leading-tight">${s.name}</p>
                         </div>
                     </div>
                 `).join('') + `</div>`;
             } 
             else if (view === 'galeri') {
                 app.innerHTML = `
-                    <div class="glass-card p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[45vh] border-dashed border-2 border-indigo-200 dark:border-slate-700">
-                        <div class="w-24 h-24 bg-indigo-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner relative">
-                            <i class="fa-solid fa-camera-retro text-4xl text-indigo-300 dark:text-slate-500"></i>
+                    <div class="glass-card p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[45vh] border-dashed border-2 border-lm-4 dark:border-dm-4/50">
+                        <div class="w-24 h-24 bg-lm-5 dark:bg-dm-2 rounded-full flex items-center justify-center mb-6 shadow-inner relative">
+                            <i class="fa-solid fa-camera-retro text-4xl text-lm-4 dark:text-dm-4"></i>
                         </div>
-                        <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-3 tracking-tight">Galeri Masih Kosong!</h3>
-                        <p class="text-gray-500 dark:text-gray-400 max-w-md text-sm leading-relaxed">
+                        <h3 class="text-2xl font-extrabold text-lm-1 dark:text-dm-6 mb-3 tracking-tight">Galeri Masih Kosong!</h3>
+                        <p class="text-lm-1/70 dark:text-dm-5 max-w-md text-sm leading-relaxed">
                             Belum ada momen yang diunggah. Kumpulkan foto terbaik bareng teman-teman X TJKT 2 dan pajang di sini!
                         </p>
                     </div>
@@ -392,20 +393,20 @@
                 Object.entries(dataJadwal).map(([hari, mapelList]) => `
                     <div class="glass-card p-6 rounded-3xl">
                         <div class="flex items-center gap-3 mb-5">
-                            <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center">
-                                <i class="fa-solid fa-clock text-purple-500 dark:text-purple-400 text-lg"></i>
+                            <div class="w-10 h-10 rounded-xl bg-lm-5 dark:bg-dm-2 flex items-center justify-center">
+                                <i class="fa-solid fa-clock text-lm-2 dark:text-dm-5 text-lg"></i>
                             </div>
-                            <h3 class="text-slate-800 dark:text-white font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
+                            <h3 class="text-lm-1 dark:text-dm-6 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
                         </div>
-                        <div class="space-y-3 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 dark:before:via-slate-700 before:to-transparent pl-6">
+                        <div class="space-y-3 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-lm-4/50 dark:before:via-dm-4/50 before:to-transparent pl-6">
                             ${mapelList.map((m) => `
-                                <div class="relative bg-white/60 dark:bg-slate-800/80 p-4 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm">
-                                    <div class="absolute left-[-29px] top-5 w-3 h-3 bg-indigo-500 dark:bg-indigo-400 rounded-full border-2 border-white dark:border-slate-800 shadow"></div>
-                                    <span class="inline-block px-2.5 py-1 bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-300 text-xs font-bold rounded-md mb-2">
+                                <div class="relative bg-white/60 dark:bg-dm-2/80 p-4 rounded-2xl border border-lm-4/20 dark:border-dm-4/30 shadow-sm">
+                                    <div class="absolute left-[-29px] top-5 w-3 h-3 bg-lm-3 dark:bg-dm-4 rounded-full border-2 border-white dark:border-dm-2 shadow"></div>
+                                    <span class="inline-block px-2.5 py-1 bg-lm-5 dark:bg-dm-3 text-lm-2 dark:text-dm-6 text-xs font-bold rounded-md mb-2">
                                         <i class="fa-regular fa-hourglass-half mr-1"></i> ${m.jam}
                                     </span>
-                                    <p class="text-base font-extrabold text-slate-800 dark:text-white mb-1">${m.mapel}</p>
-                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                                    <p class="text-base font-extrabold text-lm-1 dark:text-dm-6 mb-1">${m.mapel}</p>
+                                    <p class="text-sm font-medium text-lm-2/80 dark:text-dm-5 flex items-center gap-1.5">
                                         <i class="fa-solid fa-user-tie text-xs opacity-70"></i> ${m.guru}
                                     </p>
                                 </div>

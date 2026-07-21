@@ -19,13 +19,11 @@
             theme: { 
                 extend: {
                     colors: {
-                        /* Palet Mode Terang */
                         'lm-1': '#021024',
                         'lm-2': '#052659',
                         'lm-3': '#5483B3',
                         'lm-4': '#7DA0CA',
                         'lm-5': '#C1E8FF',
-                        /* Palet Mode Gelap */
                         'dm-1': '#190019',
                         'dm-2': '#2B124C',
                         'dm-3': '#522B5B',
@@ -46,7 +44,6 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        /* Ultra-Optimized Glassmorphism (Tanpa Heavy Backdrop-Filter, Murni Layer GPU) */
         .glass-card { 
             background: rgba(255, 255, 255, 0.85); 
             border: 1px solid rgba(255, 255, 255, 0.9); 
@@ -89,7 +86,6 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* Background Blob yang Ringan & Dihandle Sepenuhnya oleh GPU */
         .blob { 
             position: absolute; 
             width: 300px;
@@ -111,11 +107,13 @@
 </head>
 <body class="pb-10 relative min-h-screen overflow-x-hidden bg-lm-5 text-lm-1 dark:bg-dm-1 dark:text-dm-6 transition-colors duration-300">
     
-    <!-- Background Blobs (Dioptimalkan tanpa filter blur berat) -->
+    <!-- Background Blobs -->
     <div class="blob text-lm-3 dark:text-dm-3 top-[-5%] left-[-10%]"></div>
     <div class="blob text-lm-4 dark:text-dm-2 top-[15%] right-[-10%]"></div>
 
-    <div class="max-w-5xl mx-auto">
+    <!-- WRAPPER UTAMA (Agar di Desktop/Zoom Out tetap simetris di tengah) -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        
         <!-- Header Section -->
         <header class="gradient-header p-8 pb-14 text-white rounded-b-[2.5rem] shadow-xl relative overflow-hidden transition-colors duration-300">
             <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
@@ -162,6 +160,7 @@
             </div>
         </header>
 
+        <!-- Navigation Tabs -->
         <div class="flex justify-center -mt-7 mb-10 relative z-20 px-4">
             <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-xl shadow-sm border border-lm-4/30 dark:border-dm-4/30 no-scrollbar">
                 <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Piket</button>
@@ -171,8 +170,10 @@
             </div>
         </div>
 
-        <main id="app" class="px-5 min-h-[40vh]"></main>
+        <!-- Main Content Area -->
+        <main id="app" class="px-2 min-h-[40vh]"></main>
 
+        <!-- Footer -->
         <footer class="mt-12 text-center pb-8 fade-in flex flex-col items-center">
             <p class="text-sm text-lm-1/60 dark:text-dm-5 font-medium mb-3">
                 Dirancang & Dikembangkan dengan <i class="fa-solid fa-heart text-lm-4 dark:text-dm-4 mx-1"></i> oleh 

@@ -49,7 +49,6 @@
             border: 1px solid rgba(255, 255, 255, 0.9); 
             box-shadow: 0 4px 20px rgba(2, 16, 36, 0.04);
             transform: translate3d(0, 0, 0);
-            -webkit-transform: translate3d(0, 0, 0);
         }
         
         .dark .glass-card {
@@ -57,7 +56,6 @@
             border: 1px solid rgba(133, 79, 108, 0.3);
             box-shadow: 0 4px 20px rgba(25, 0, 25, 0.2);
             transform: translate3d(0, 0, 0);
-            -webkit-transform: translate3d(0, 0, 0);
         }
 
         .gradient-header { 
@@ -95,7 +93,6 @@
             opacity: 0.25; 
             background: radial-gradient(circle, currentColor 0%, transparent 70%);
             transform: translate3d(0, 0, 0);
-            -webkit-transform: translate3d(0, 0, 0);
             pointer-events: none;
         }
         
@@ -111,7 +108,6 @@
     <div class="blob text-lm-3 dark:text-dm-3 top-[-5%] left-[-10%]"></div>
     <div class="blob text-lm-4 dark:text-dm-2 top-[15%] right-[-10%]"></div>
 
-    <!-- WRAPPER UTAMA (Agar di Desktop/Zoom Out tetap simetris di tengah) -->
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
         
         <!-- Header Section -->
@@ -163,10 +159,11 @@
         <!-- Navigation Tabs -->
         <div class="flex justify-center -mt-7 mb-10 relative z-20 px-4">
             <div class="glass-card p-1.5 rounded-2xl flex gap-1 overflow-x-auto w-full max-w-xl shadow-sm border border-lm-4/30 dark:border-dm-4/30 no-scrollbar">
-                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Piket</button>
-                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Struktur</button>
-                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Jadwal</button>
-                <button onclick="render('galeri')" id="btn-galeri" class="flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Galeri</button>
+                <button onclick="render('piket')" id="btn-piket" class="tab-active flex-1 min-w-[70px] px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Piket</button>
+                <button onclick="render('struktur')" id="btn-struktur" class="flex-1 min-w-[70px] px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Struktur</button>
+                <button onclick="render('jadwal')" id="btn-jadwal" class="flex-1 min-w-[70px] px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Jadwal</button>
+                <button onclick="render('tugas')" id="btn-tugas" class="flex-1 min-w-[70px] px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Tugas</button>
+                <button onclick="render('galeri')" id="btn-galeri" class="flex-1 min-w-[70px] px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-lm-2/70 dark:text-dm-5 transition-all duration-300 whitespace-nowrap hover:text-lm-2 dark:hover:text-dm-6">Galeri</button>
             </div>
         </div>
 
@@ -262,6 +259,7 @@
         };
 
         let currentScheduleState = ""; 
+        let activeTab = 'piket';
 
         function updateClockAndSchedule() {
             const now = new Date();
@@ -315,7 +313,8 @@
                         container.innerHTML = htmlContent;
                         currentScheduleState = newStateId;
                     } else {
-                        document.getElementById('countdown-timer').innerText = countdownStr;
+                        const timerEl = document.getElementById('countdown-timer');
+                        if(timerEl) timerEl.innerText = countdownStr;
                     }
                     foundState = true; break;
                 } else if (now < startTime) {
@@ -346,7 +345,8 @@
                         container.innerHTML = htmlContent;
                         currentScheduleState = newStateId;
                     } else {
-                        document.getElementById('countdown-timer').innerText = countdownStr;
+                        const timerEl = document.getElementById('countdown-timer');
+                        if(timerEl) timerEl.innerText = countdownStr;
                     }
                     foundState = true; break;
                 }
@@ -362,6 +362,10 @@
                     currentScheduleState = newStateId;
                 }
             }
+
+            if (activeTab === 'tugas') {
+                renderTugasContent();
+            }
         }
         
         setInterval(updateClockAndSchedule, 1000);
@@ -370,7 +374,105 @@
         const quotes = ["Coding itu gampang, yang susah nyari errornya.", "Sistem error bukan akhir dunia, tapi awal dari debugging.", "Jadilah pencipta teknologi, bukan cuma pemakai.", "SMK Bisa! TJKT Luar Biasa!"];
         document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
+        // --- Logika Tugas dengan Proteksi Sandi ---
+        const ADMIN_PASSWORD = "TJKT2prikitiw"; // <-- Ganti password rahasiamu di sini!
+
+        function getStoredTugas() {
+            let tasks = JSON.parse(localStorage.getItem('tjkt2_tugas')) || [];
+            const now = new Date().getTime();
+            const validTasks = tasks.filter(t => new Date(t.deadline).getTime() > now);
+            if (validTasks.length !== tasks.length) {
+                localStorage.setItem('tjkt2_tugas', JSON.stringify(validTasks));
+            }
+            return validTasks;
+        }
+
+        function tambahTugas(event) {
+            event.preventDefault();
+            
+            // Cek Password Admin
+            const passwordInput = prompt("Masukkan sandi khusus pengurus untuk menambahkan tugas:");
+            if (passwordInput === null) return; // Jika ditekan cancel
+            if (passwordInput !== ADMIN_PASSWORD) {
+                alert("Sandi salah! Kamu tidak memiliki izin menambahkan tugas.");
+                return;
+            }
+
+            const mapel = document.getElementById('input-mapel').value;
+            const judul = document.getElementById('input-judul').value;
+            const deadline = document.getElementById('input-deadline').value;
+
+            if (!mapel || !judul || !deadline) return;
+
+            let tasks = JSON.parse(localStorage.getItem('tjkt2_tugas')) || [];
+            tasks.push({ mapel, judul, deadline });
+            localStorage.setItem('tjkt2_tugas', JSON.stringify(tasks));
+
+            alert("Tugas berhasil ditambahkan!");
+            render('tugas');
+        }
+
+        function hapusTugas(index) {
+            const passwordInput = prompt("Masukkan sandi khusus pengurus untuk menghapus tugas:");
+            if (passwordInput === null) return;
+            if (passwordInput !== ADMIN_PASSWORD) {
+                alert("Sandi salah! Kamu tidak memiliki izin menghapus tugas.");
+                return;
+            }
+
+            let tasks = JSON.parse(localStorage.getItem('tjkt2_tugas')) || [];
+            tasks.splice(index, 1);
+            localStorage.setItem('tjkt2_tugas', JSON.stringify(tasks));
+            render('tugas');
+        }
+
+        function renderTugasContent() {
+            const taskContainer = document.getElementById('task-list-container');
+            if (!taskContainer) return;
+
+            const tasks = getStoredTugas();
+            if (tasks.length === 0) {
+                taskContainer.innerHTML = `
+                    <div class="text-center py-10 text-lm-1/50 dark:text-dm-5">
+                        <i class="fa-solid fa-clipboard-check text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm font-semibold">Tidak ada tugas aktif saat ini. Aman!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const now = new Date().getTime();
+            taskContainer.innerHTML = tasks.map((t, idx) => {
+                const deadlineTime = new Date(t.deadline).getTime();
+                const diff = deadlineTime - now;
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                let sisaWaktuStr = d > 0 ? `${d} hari ${h} jam lagi` : (h > 0 ? `${h} jam ${m} menit lagi` : `${m} menit lagi`);
+
+                return `
+                    <div class="bg-white/50 dark:bg-dm-2/60 p-4 rounded-2xl border border-lm-4/30 dark:border-dm-4/30 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <span class="px-2.5 py-1 bg-lm-5 dark:bg-dm-3 text-lm-2 dark:text-dm-6 text-xs font-extrabold rounded-md uppercase tracking-wider mb-2 inline-block">
+                                ${t.mapel}
+                            </span>
+                            <h4 class="text-base font-extrabold text-lm-1 dark:text-dm-6">${t.judul}</h4>
+                            <p class="text-xs font-semibold text-rose-500 dark:text-dm-5 mt-1">
+                                <i class="fa-regular fa-clock mr-1"></i> Deadline: ${new Date(t.deadline).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })} (${sisaWaktuStr})
+                            </p>
+                        </div>
+                        <button onclick="hapusTugas(${idx})" class="text-rose-400 hover:text-rose-600 p-2 text-sm transition-colors" title="Hapus Tugas">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- Render UI (Tabs) ---
         function render(view) {
+            activeTab = view;
             document.querySelectorAll('button').forEach(b => {
                 b.classList.remove('tab-active');
             });
@@ -410,6 +512,44 @@
                     </div>
                 `).join('') + `</div>`;
             } 
+            else if(view === 'tugas') {
+                app.innerHTML = `
+                    <div class="space-y-6">
+                        <!-- Form Tambah Tugas (Dilindungi Password) -->
+                        <div class="glass-card p-6 rounded-3xl">
+                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center justify-between">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-plus text-lm-3 dark:text-dm-4"></i> Tambah Tugas Kelas
+                                </span>
+                                <span class="text-[10px] font-semibold text-lm-1/50 dark:text-dm-5 uppercase tracking-wider bg-lm-5 dark:bg-dm-2 px-2.5 py-1 rounded-md">
+                                    <i class="fa-solid fa-lock mr-1"></i> Khusus Pengurus
+                                </span>
+                            </h3>
+                            <form onsubmit="tambahTugas(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <input type="text" id="input-mapel" placeholder="Nama Mapel (Cth: MTK)" required class="bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-4 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
+                                <input type="text" id="input-judul" placeholder="Judul / Deskripsi Tugas" required class="bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-4 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
+                                <div class="flex gap-2">
+                                    <input type="datetime-local" id="input-deadline" required class="flex-1 bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-3 py-2.5 rounded-xl text-xs font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
+                                    <button type="submit" class="bg-lm-2 dark:bg-dm-4 text-lm-5 dark:text-dm-6 px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-95 transition-opacity shadow-sm">
+                                        Simpan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Daftar Tugas Aktif -->
+                        <div class="glass-card p-6 rounded-3xl">
+                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-lm-3 dark:text-dm-4"></i> Daftar Tugas Aktif (Auto-Delete)
+                            </h3>
+                            <div id="task-list-container" class="space-y-3">
+                                <!-- Diisi oleh fungsi renderTugasContent -->
+                            </div>
+                        </div>
+                    </div>
+                `;
+                renderTugasContent();
+            }
             else if (view === 'galeri') {
                 app.innerHTML = `
                     <div class="glass-card p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[45vh] border-dashed border-2 border-lm-4 dark:border-dm-4/50">
@@ -455,3 +595,4 @@
     </script>
 </body>
 </html>
+ 

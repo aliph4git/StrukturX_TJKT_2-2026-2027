@@ -276,13 +276,19 @@
             minggu: []
         };
 
+        // -> TAMBAHKAN TUGAS DI SINI
         const dataTugas = [
+            // Contoh format: { mapel: "Nama Mapel", judul: "Deskripsi", deadline: "Tahun-Bulan-TanggalTJam:Menit" }
+            // Hapus atau ganti contoh di bawah ini:
             { mapel: "INFORMATIKA", judul: "Tugas Coding Kelompok", deadline: "2026-07-30T23:59" },
             { mapel: "BAHASA INGGRIS", judul: "Mengerjakan LKS Hal 12", deadline: "2026-07-28T09:00" }
         ];
 
+        // -> TAMBAHKAN FOTO GALERI DI SINI
         const dataGaleri = [
-            { url: "https://via.placeholder.com/600x400?text=Foto+Kelas+TJKT", caption: "Keseruan Anak TJKT 2", date: "2026-07-22" }
+            // Contoh format: { url: "LinkGambar", caption: "Keterangan", date: "Tahun-Bulan-Tanggal" }
+            // Gunakan link gambar dari Discord, Imgur, atau Postimg.
+            { url: "https://i.imgur.com/ZhxBuqO.jpeg", caption: "hiraukan,ini cuma test bisa apa ngga", date: "2026-07-22" }
         ];
 
         // ==========================================
@@ -478,6 +484,7 @@
             if (!taskContainer) return;
 
             const now = new Date().getTime();
+            // Filter tugas agar hanya menampilkan yang deadlinenya belum lewat
             const activeTasks = dataTugas.filter(t => new Date(t.deadline).getTime() > now);
 
             if (activeTasks.length === 0) {
@@ -509,7 +516,6 @@
             }).join('');
         }
 
-        // --- GALERI DENGAN TATA LETAK MASONRY INOVATIF ---
         function renderGaleriContent() {
             const galleryContainer = document.getElementById('gallery-list-container');
             if (!galleryContainer) return;
@@ -526,13 +532,11 @@
             }
 
             galleryContainer.innerHTML = dataGaleri.map((p) => `
-                <div class="relative group rounded-2xl overflow-hidden shadow-sm border border-lm-4/30 dark:border-dm-4/30 bg-lm-5/20 dark:bg-dm-2 break-inside-avoid mb-4">
-                    <img src="${p.url}" alt="Foto Galeri" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400?text=Gambar+Rusak/Link+Mati'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-lm-1/90 via-lm-1/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                        <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-300 ease-out">
-                            <p class="text-white text-base font-bold drop-shadow-md leading-tight">${p.caption}</p>
-                            <p class="text-white/80 text-[11px] mt-1.5 font-medium tracking-wide">${new Date(p.date).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
-                        </div>
+                <div class="relative group rounded-2xl overflow-hidden shadow-sm border border-lm-4/30 dark:border-dm-4/30 aspect-square bg-lm-5/20 dark:bg-dm-2">
+                    <img src="${p.url}" alt="Foto Galeri" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400?text=Gambar+Rusak/Link+Mati'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-lm-1/90 via-lm-1/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                        <p class="text-white text-sm font-bold truncate drop-shadow-md">${p.caption}</p>
+                        <p class="text-white/80 text-[10px] mb-2 font-medium">${new Date(p.date).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
                     </div>
                 </div>
             `).join('');
@@ -588,11 +592,8 @@
                 app.innerHTML = `
                     <div class="space-y-6">
                         <div class="glass-card p-6 rounded-3xl">
-                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-6 flex items-center gap-2"><i class="fa-solid fa-images text-lm-3 dark:text-dm-4"></i> Koleksi Foto</h3>
-                            
-                            <!-- MENGGUNAKAN COLUMNS UNTUK EFEK MASONRY -->
-                            <div id="gallery-list-container" class="columns-1 sm:columns-2 lg:columns-3 gap-4 w-full"></div>
-                            
+                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center gap-2"><i class="fa-solid fa-images text-lm-3 dark:text-dm-4"></i> Koleksi Foto</h3>
+                            <div id="gallery-list-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
                         </div>
                     </div>
                 `;

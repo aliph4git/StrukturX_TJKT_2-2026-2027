@@ -184,6 +184,10 @@
     </div>
 
     <script>
+        // --- Konfigurasi Sandi ---
+        const ADMIN_PASSWORD = "tjkt2prikitiw";   // Sandi untuk tambah/hapus Tugas
+        const GALLERY_PASSWORD = "prikitiwtjkt2"; // Sandi BARU untuk tambah/hapus Galeri
+
         function toggleDarkMode() {
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
@@ -374,9 +378,7 @@
         const quotes = ["Coding itu gampang, yang susah nyari errornya.", "Sistem error bukan akhir dunia, tapi awal dari debugging.", "Jadilah pencipta teknologi, bukan cuma pemakai.", "SMK Bisa! TJKT Luar Biasa!"];
         document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
-        // --- Logika Tugas dengan Proteksi Sandi ---
-        const ADMIN_PASSWORD = "TJKT2prikitiw"; // <-- Ganti password rahasiamu di sini!
-
+        // --- Logika Fitur Tugas (Dengan Sandi Admin) ---
         function getStoredTugas() {
             let tasks = JSON.parse(localStorage.getItem('tjkt2_tugas')) || [];
             const now = new Date().getTime();
@@ -389,34 +391,29 @@
 
         function tambahTugas(event) {
             event.preventDefault();
-            
-            // Cek Password Admin
-            const passwordInput = prompt("Masukkan sandi khusus pengurus untuk menambahkan tugas:");
-            if (passwordInput === null) return; // Jika ditekan cancel
+            const passwordInput = prompt("Masukkan sandi khusus pengurus untuk menambahkan TUGAS:");
+            if (passwordInput === null) return;
             if (passwordInput !== ADMIN_PASSWORD) {
-                alert("Sandi salah! Kamu tidak memiliki izin menambahkan tugas.");
+                alert("Sandi salah! Kamu tidak memiliki izin.");
                 return;
             }
 
             const mapel = document.getElementById('input-mapel').value;
             const judul = document.getElementById('input-judul').value;
             const deadline = document.getElementById('input-deadline').value;
-
             if (!mapel || !judul || !deadline) return;
 
             let tasks = JSON.parse(localStorage.getItem('tjkt2_tugas')) || [];
             tasks.push({ mapel, judul, deadline });
             localStorage.setItem('tjkt2_tugas', JSON.stringify(tasks));
-
-            alert("Tugas berhasil ditambahkan!");
             render('tugas');
         }
 
         function hapusTugas(index) {
-            const passwordInput = prompt("Masukkan sandi khusus pengurus untuk menghapus tugas:");
+            const passwordInput = prompt("Masukkan sandi khusus pengurus untuk menghapus TUGAS:");
             if (passwordInput === null) return;
             if (passwordInput !== ADMIN_PASSWORD) {
-                alert("Sandi salah! Kamu tidak memiliki izin menghapus tugas.");
+                alert("Sandi salah! Kamu tidak memiliki izin.");
                 return;
             }
 
@@ -443,39 +440,103 @@
 
             const now = new Date().getTime();
             taskContainer.innerHTML = tasks.map((t, idx) => {
-                const deadlineTime = new Date(t.deadline).getTime();
-                const diff = deadlineTime - now;
+                const diff = new Date(t.deadline).getTime() - now;
                 const d = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                
                 let sisaWaktuStr = d > 0 ? `${d} hari ${h} jam lagi` : (h > 0 ? `${h} jam ${m} menit lagi` : `${m} menit lagi`);
 
                 return `
                     <div class="bg-white/50 dark:bg-dm-2/60 p-4 rounded-2xl border border-lm-4/30 dark:border-dm-4/30 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <div>
-                            <span class="px-2.5 py-1 bg-lm-5 dark:bg-dm-3 text-lm-2 dark:text-dm-6 text-xs font-extrabold rounded-md uppercase tracking-wider mb-2 inline-block">
-                                ${t.mapel}
-                            </span>
+                            <span class="px-2.5 py-1 bg-lm-5 dark:bg-dm-3 text-lm-2 dark:text-dm-6 text-xs font-extrabold rounded-md uppercase tracking-wider mb-2 inline-block">${t.mapel}</span>
                             <h4 class="text-base font-extrabold text-lm-1 dark:text-dm-6">${t.judul}</h4>
-                            <p class="text-xs font-semibold text-rose-500 dark:text-dm-5 mt-1">
-                                <i class="fa-regular fa-clock mr-1"></i> Deadline: ${new Date(t.deadline).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })} (${sisaWaktuStr})
-                            </p>
+                            <p class="text-xs font-semibold text-rose-500 dark:text-dm-5 mt-1"><i class="fa-regular fa-clock mr-1"></i> Deadline: ${new Date(t.deadline).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })} (${sisaWaktuStr})</p>
                         </div>
-                        <button onclick="hapusTugas(${idx})" class="text-rose-400 hover:text-rose-600 p-2 text-sm transition-colors" title="Hapus Tugas">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                        <button onclick="hapusTugas(${idx})" class="text-rose-400 hover:text-rose-600 p-2 text-sm transition-colors" title="Hapus Tugas"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `;
             }).join('');
         }
 
+        // --- Logika Fitur Galeri (Dengan Sandi Berbeda & Tanpa Deadline) ---
+        function getStoredGaleri() {
+            return JSON.parse(localStorage.getItem('tjkt2_galeri')) || [];
+        }
+
+        function tambahGaleri(event) {
+            event.preventDefault();
+            
+            const passwordInput = prompt("Masukkan sandi GALERI untuk menambahkan foto:");
+            if (passwordInput === null) return;
+            if (passwordInput !== GALLERY_PASSWORD) {
+                alert("Sandi salah! Kamu tidak memiliki izin menambahkan foto.");
+                return;
+            }
+
+            const url = document.getElementById('input-img-url').value;
+            const caption = document.getElementById('input-img-caption').value;
+
+            if (!url || !caption) return;
+
+            let photos = getStoredGaleri();
+            // Simpan gambar dan tanggal upload (untuk ditampilkan saja)
+            photos.push({ url, caption, date: new Date().toISOString() });
+            localStorage.setItem('tjkt2_galeri', JSON.stringify(photos));
+
+            alert("Foto berhasil ditambahkan ke Galeri!");
+            render('galeri');
+        }
+
+        function hapusGaleri(index) {
+            const passwordInput = prompt("Masukkan sandi GALERI untuk menghapus foto:");
+            if (passwordInput === null) return;
+            if (passwordInput !== GALLERY_PASSWORD) {
+                alert("Sandi salah! Kamu tidak memiliki izin menghapus foto.");
+                return;
+            }
+
+            let photos = getStoredGaleri();
+            photos.splice(index, 1);
+            localStorage.setItem('tjkt2_galeri', JSON.stringify(photos));
+            render('galeri');
+        }
+
+        function renderGaleriContent() {
+            const galleryContainer = document.getElementById('gallery-list-container');
+            if (!galleryContainer) return;
+
+            const photos = getStoredGaleri();
+            if (photos.length === 0) {
+                galleryContainer.innerHTML = `
+                    <div class="col-span-full flex flex-col items-center justify-center text-center min-h-[250px] border-dashed border-2 border-lm-4 dark:border-dm-4/50 rounded-2xl text-lm-1/60 dark:text-dm-5">
+                        <i class="fa-solid fa-images text-5xl mb-4 opacity-50"></i>
+                        <h3 class="text-lg font-bold">Galeri Masih Kosong!</h3>
+                        <p class="text-sm">Gunakan link gambar (URL) untuk menambahkan momen kelas.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Tampilkan foto dalam format grid yang rapi
+            galleryContainer.innerHTML = photos.map((p, idx) => `
+                <div class="relative group rounded-2xl overflow-hidden shadow-sm border border-lm-4/30 dark:border-dm-4/30 aspect-square bg-lm-5/20 dark:bg-dm-2">
+                    <img src="${p.url}" alt="Foto Galeri" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400?text=Gambar+Rusak/Link+Mati'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-lm-1/90 via-lm-1/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                        <p class="text-white text-sm font-bold truncate drop-shadow-md">${p.caption}</p>
+                        <p class="text-white/80 text-[10px] mb-2 font-medium">${new Date(p.date).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
+                        <button onclick="hapusGaleri(${idx})" class="absolute top-3 right-3 bg-rose-500 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-rose-600 transition-colors shadow-lg" title="Hapus Foto">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         // --- Render UI (Tabs) ---
         function render(view) {
             activeTab = view;
-            document.querySelectorAll('button').forEach(b => {
-                b.classList.remove('tab-active');
-            });
+            document.querySelectorAll('button').forEach(b => b.classList.remove('tab-active'));
             const activeBtn = document.getElementById('btn-' + view);
             if(activeBtn) activeBtn.classList.add('tab-active');
 
@@ -487,9 +548,7 @@
                 Object.entries(dataPiket).map(([hari, nama]) => `
                     <div class="glass-card p-6 rounded-3xl transition-shadow">
                         <div class="flex items-center gap-3 mb-5 border-b border-lm-4/30 dark:border-dm-4/30 pb-3">
-                            <div class="w-10 h-10 rounded-xl bg-lm-5 dark:bg-dm-2 flex items-center justify-center">
-                                <i class="fa-regular fa-calendar text-lm-2 dark:text-dm-5 text-lg"></i>
-                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-lm-5 dark:bg-dm-2 flex items-center justify-center"><i class="fa-regular fa-calendar text-lm-2 dark:text-dm-5 text-lg"></i></div>
                             <h3 class="text-lm-1 dark:text-dm-6 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
                         </div>
                         <div class="flex flex-wrap gap-2">
@@ -502,9 +561,7 @@
                 app.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">` + 
                 struktur.map(s => `
                     <div class="glass-card p-6 rounded-3xl flex items-center gap-5">
-                        <div class="w-14 h-14 flex items-center justify-center bg-lm-5 dark:bg-dm-3/50 text-lm-2 dark:text-dm-5 rounded-2xl text-2xl shadow-sm border border-lm-4/30 dark:border-dm-4/30">
-                            <i class="fa-solid ${s.icon}"></i>
-                        </div>
+                        <div class="w-14 h-14 flex items-center justify-center bg-lm-5 dark:bg-dm-3/50 text-lm-2 dark:text-dm-5 rounded-2xl text-2xl shadow-sm border border-lm-4/30 dark:border-dm-4/30"><i class="fa-solid ${s.icon}"></i></div>
                         <div>
                             <p class="text-xs uppercase tracking-widest font-bold text-lm-2/70 dark:text-dm-5 mb-1">${s.pos}</p>
                             <p class="font-bold text-lm-1 dark:text-dm-6 text-lg leading-tight">${s.name}</p>
@@ -515,36 +572,25 @@
             else if(view === 'tugas') {
                 app.innerHTML = `
                     <div class="space-y-6">
-                        <!-- Form Tambah Tugas (Dilindungi Password) -->
+                        <!-- Form Tambah Tugas -->
                         <div class="glass-card p-6 rounded-3xl">
                             <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center justify-between">
-                                <span class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-plus text-lm-3 dark:text-dm-4"></i> Tambah Tugas Kelas
-                                </span>
-                                <span class="text-[10px] font-semibold text-lm-1/50 dark:text-dm-5 uppercase tracking-wider bg-lm-5 dark:bg-dm-2 px-2.5 py-1 rounded-md">
-                                    <i class="fa-solid fa-lock mr-1"></i> Khusus Pengurus
-                                </span>
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-circle-plus text-lm-3 dark:text-dm-4"></i> Tambah Tugas Kelas</span>
+                                <span class="text-[10px] font-semibold text-lm-1/50 dark:text-dm-5 uppercase tracking-wider bg-lm-5 dark:bg-dm-2 px-2.5 py-1 rounded-md"><i class="fa-solid fa-lock mr-1"></i> Khusus Pengurus</span>
                             </h3>
                             <form onsubmit="tambahTugas(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <input type="text" id="input-mapel" placeholder="Nama Mapel (Cth: MTK)" required class="bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-4 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
                                 <input type="text" id="input-judul" placeholder="Judul / Deskripsi Tugas" required class="bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-4 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
                                 <div class="flex gap-2">
                                     <input type="datetime-local" id="input-deadline" required class="flex-1 bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-3 py-2.5 rounded-xl text-xs font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
-                                    <button type="submit" class="bg-lm-2 dark:bg-dm-4 text-lm-5 dark:text-dm-6 px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-95 transition-opacity shadow-sm">
-                                        Simpan
-                                    </button>
+                                    <button type="submit" class="bg-lm-2 dark:bg-dm-4 text-lm-5 dark:text-dm-6 px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-95 transition-opacity shadow-sm">Simpan</button>
                                 </div>
                             </form>
                         </div>
-
                         <!-- Daftar Tugas Aktif -->
                         <div class="glass-card p-6 rounded-3xl">
-                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-list-check text-lm-3 dark:text-dm-4"></i> Daftar Tugas Aktif (Auto-Delete)
-                            </h3>
-                            <div id="task-list-container" class="space-y-3">
-                                <!-- Diisi oleh fungsi renderTugasContent -->
-                            </div>
+                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check text-lm-3 dark:text-dm-4"></i> Daftar Tugas Aktif (Auto-Delete)</h3>
+                            <div id="task-list-container" class="space-y-3"></div>
                         </div>
                     </div>
                 `;
@@ -552,38 +598,47 @@
             }
             else if (view === 'galeri') {
                 app.innerHTML = `
-                    <div class="glass-card p-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[45vh] border-dashed border-2 border-lm-4 dark:border-dm-4/50">
-                        <div class="w-24 h-24 bg-lm-5 dark:bg-dm-2 rounded-full flex items-center justify-center mb-6 shadow-inner relative">
-                            <i class="fa-solid fa-camera-retro text-4xl text-lm-4 dark:text-dm-4"></i>
+                    <div class="space-y-6">
+                        <!-- Form Tambah Galeri -->
+                        <div class="glass-card p-6 rounded-3xl">
+                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center justify-between">
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-camera-retro text-lm-3 dark:text-dm-4"></i> Tambah Foto Kelas</span>
+                                <span class="text-[10px] font-semibold text-lm-1/50 dark:text-dm-5 uppercase tracking-wider bg-lm-5 dark:bg-dm-2 px-2.5 py-1 rounded-md"><i class="fa-solid fa-lock mr-1"></i> Khusus Pengurus</span>
+                            </h3>
+                            <form onsubmit="tambahGaleri(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input type="url" id="input-img-url" placeholder="Link Gambar / URL (Cth: https://imgur.com/...)" required class="bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-4 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
+                                <div class="flex gap-2">
+                                    <input type="text" id="input-img-caption" placeholder="Caption / Keterangan Gambar" required class="flex-1 bg-white/70 dark:bg-dm-2/80 border border-lm-4/40 dark:border-dm-4/40 px-4 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:border-lm-2 dark:focus:border-dm-5">
+                                    <button type="submit" class="bg-lm-2 dark:bg-dm-4 text-lm-5 dark:text-dm-6 px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-95 transition-opacity shadow-sm">Unggah</button>
+                                </div>
+                            </form>
+                            <p class="text-xs text-lm-1/60 dark:text-dm-5 mt-3"><i class="fa-solid fa-circle-info mr-1"></i> <strong>Tips:</strong> Upload gambar ke Discord atau postimg.cc lalu tempelkan link (URL) gambarnya ke sini agar web tidak berat.</p>
                         </div>
-                        <h3 class="text-2xl font-extrabold text-lm-1 dark:text-dm-6 mb-3 tracking-tight">Galeri Masih Kosong!</h3>
-                        <p class="text-lm-1/70 dark:text-dm-5 max-w-md text-sm leading-relaxed">
-                            Belum ada momen yang diunggah. Kumpulkan foto terbaik bareng teman-teman X TJKT 2 dan pajang di sini!
-                        </p>
+                        
+                        <!-- Grid Foto Galeri -->
+                        <div class="glass-card p-6 rounded-3xl">
+                            <h3 class="text-lg font-extrabold text-lm-1 dark:text-dm-6 mb-4 flex items-center gap-2"><i class="fa-solid fa-images text-lm-3 dark:text-dm-4"></i> Koleksi Foto</h3>
+                            <div id="gallery-list-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+                        </div>
                     </div>
                 `;
+                renderGaleriContent();
             }
             else {
                 app.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">` + 
                 Object.entries(dataJadwal).map(([hari, mapelList]) => `
                     <div class="glass-card p-6 rounded-3xl">
                         <div class="flex items-center gap-3 mb-5">
-                            <div class="w-10 h-10 rounded-xl bg-lm-5 dark:bg-dm-2 flex items-center justify-center">
-                                <i class="fa-solid fa-clock text-lm-2 dark:text-dm-5 text-lg"></i>
-                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-lm-5 dark:bg-dm-2 flex items-center justify-center"><i class="fa-solid fa-clock text-lm-2 dark:text-dm-5 text-lg"></i></div>
                             <h3 class="text-lm-1 dark:text-dm-6 font-extrabold text-lg capitalize tracking-wide">${hari}</h3>
                         </div>
                         <div class="space-y-3 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-lm-4/50 dark:before:via-dm-4/50 before:to-transparent pl-6">
                             ${mapelList.map((m) => `
                                 <div class="relative bg-white/60 dark:bg-dm-2/80 p-4 rounded-2xl border border-lm-4/20 dark:border-dm-4/30 shadow-sm">
                                     <div class="absolute left-[-29px] top-5 w-3 h-3 bg-lm-3 dark:bg-dm-4 rounded-full border-2 border-white dark:border-dm-2 shadow"></div>
-                                    <span class="inline-block px-2.5 py-1 bg-lm-5 dark:bg-dm-3 text-lm-2 dark:text-dm-6 text-xs font-bold rounded-md mb-2">
-                                        <i class="fa-regular fa-hourglass-half mr-1"></i> ${m.jam}
-                                    </span>
+                                    <span class="inline-block px-2.5 py-1 bg-lm-5 dark:bg-dm-3 text-lm-2 dark:text-dm-6 text-xs font-bold rounded-md mb-2"><i class="fa-regular fa-hourglass-half mr-1"></i> ${m.jam}</span>
                                     <p class="text-base font-extrabold text-lm-1 dark:text-dm-6 mb-1">${m.mapel}</p>
-                                    <p class="text-sm font-medium text-lm-2/80 dark:text-dm-5 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-user-tie text-xs opacity-70"></i> ${m.guru}
-                                    </p>
+                                    <p class="text-sm font-medium text-lm-2/80 dark:text-dm-5 flex items-center gap-1.5"><i class="fa-solid fa-user-tie text-xs opacity-70"></i> ${m.guru}</p>
                                 </div>
                             `).join('')}
                         </div>
@@ -595,4 +650,3 @@
     </script>
 </body>
 </html>
- 
